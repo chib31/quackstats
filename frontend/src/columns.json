@@ -1,0 +1,791 @@
+{
+    "batting": [
+        {
+            "key": "playerName",
+            "selectFilters": { "options": [], "selected":[] },
+            "grouping": { "label": "Player", "grouped":  false },
+            "raw": {
+                "label": "Player",
+                "display": { "displayed": true, "order": 10, "alwaysVisible": true },
+                "sorted": { "priority": null, "desc": false }
+            }
+        },
+        {
+            "key": "groupTerm",
+            "aggregate": {
+                "label": null,
+                "display": { "displayed": true, "order": 10, "alwaysVisible": true },
+                "sorted": { "priority": null, "desc": true }
+            }
+        },
+        {
+            "key": "runs",
+            "raw": {
+                "label": "Runs",
+                "display": { "displayed": true, "order": 20 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": 1, "desc": true }
+            },
+            "aggregate": {
+                "aggType": "sum",
+                "label": "Runs",
+                "display": { "displayed": true, "order": 20 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": 1, "desc": true }
+            }
+        },
+        {
+            "key": "deliveries",
+            "raw": {
+                "label": "Deliveries",
+                "display": { "displayed": true, "order": 30 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": null, "desc": true }
+            },
+            "aggregate": {
+                "aggType": "sum",
+                "label": "Deliveries",
+                "display": { "displayed": true, "order": 30 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": null, "desc": true }
+            }
+        },
+        {
+            "key": "average",
+            "aggregate": {
+                "aggType": "complex",
+                "label": "Average",
+                "display": { "displayed": true, "order": 40 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": null, "desc": true },
+                "formatter": "dec2Always"
+            }
+        },
+        {
+            "key": "strikeRate",
+            "raw": {
+                "label": "Strike Rate",
+                "display": { "displayed": true, "order": 50 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": 2, "desc": true },
+                "formatter": "dec2Always"
+            },
+            "aggregate": {
+                "aggType": "complex",
+                "label": "Strike Rate",
+                "display": { "displayed": true, "order": 50 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": 2, "desc": true },
+                "formatter": "dec2Always"
+            }
+        },
+        {
+            "key": "innings",
+            "aggregate": {
+                "aggType": "sum",
+                "label": "Innings",
+                "display": { "displayed": true, "order": 60 },
+                "sorted": { "priority": null, "desc": true },
+                "rangeFilters": { "min": 0, "max": null, "range": [] }
+            }
+        },
+        {
+            "key": "fours",
+            "raw": {
+                "label": "Fours",
+                "display": { "displayed": true, "order": 70 },
+                "sorted": { "priority": null, "desc": true },
+                "rangeFilters": { "min": 0, "max": null, "range": [] }
+            },
+            "aggregate": {
+                "aggType": "sum",
+                "label": "Fours",
+                "display": { "displayed": true, "order": 70 },
+                "sorted": { "priority": null, "desc": true },
+                "rangeFilters": { "min": 0, "max": null, "range": [] }
+            }
+        },
+        {
+            "key": "sixes",
+            "raw": {
+                "label": "Sixes",
+                "display": { "displayed": true, "order": 80 },
+                "sorted": { "priority": null, "desc": true },
+                "rangeFilters": { "min": 0, "max": null, "range": [] }
+            },
+            "aggregate": {
+                "aggType": "sum",
+                "label": "Sixes",
+                "display": { "displayed": true, "order": 80 },
+                "sorted": { "priority": null, "desc": true },
+                "rangeFilters": { "min": 0, "max": null, "range": [] }
+            }
+        },
+        {
+            "key": "battingConclusion",
+            "selectFilters": { "options": [], "selected":[] },
+            "grouping": { "label": "Wicket Type", "grouped":  false },
+            "raw": {
+                "label": "Wicket Type",
+                "display": { "displayed": true, "order": 80 },
+                "sorted": { "priority": null, "desc": false }
+            }
+        },
+        {
+            "key": "position",
+            "selectFilters": { "options": [], "selected":[] },
+            "grouping": { "label": "Position", "grouped":  false },
+            "raw": {
+                "label": "Position",
+                "display": { "displayed": false, "order": 90 },
+                "sorted": { "priority": null, "desc": false },
+                "formatter": "dec2NoTrail"
+            },
+            "aggregate": {
+                "aggType": "mean",
+                "label": "Avg Position",
+                "display": { "displayed": false, "order": 90 },
+                "sorted": { "priority": null, "desc": false },
+                "formatter": "dec2NoTrail"
+            }
+        },
+        {
+            "key": "wickets",
+            "aggregate": {
+                "aggType": "sum",
+                "label": "Wickets",
+                "display": { "displayed": true, "order": 100 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": null, "desc": true }
+            }
+        },
+        {
+            "key": "notOuts",
+            "aggregate": {
+                "aggType": "sum",
+                "label": "Not Outs",
+                "display": { "displayed": true, "order": 110 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": null, "desc": true }
+            }
+        },
+        {
+            "key": "percentTotal",
+            "raw": {
+                "label": "% of Total",
+                "display": { "displayed": false, "order": 110 },
+                "rangeFilters": { "min": 0, "max": 100, "range": [] },
+                "sorted": { "priority": null, "desc": true },
+                "formatter": "percent1Always"
+            },
+            "aggregate": {
+                "aggType": "complex",
+                "label": "% of Total",
+                "display": { "displayed": false, "order": 110 },
+                "rangeFilters": { "min": 0, "max": 100, "range": [] },
+                "sorted": { "priority": null, "desc": true },
+                "formatter": "percent1Always"
+            }
+        },
+        {
+            "key": "fixture",
+            "grouping": { "label": "Fixture", "grouped":  false },
+            "raw": {
+                "label": "Fixture",
+                "display": { "displayed": true, "order": 120 }
+            }
+        },
+        {
+            "key": "season",
+            "selectFilters": { "options": [2019, 2020, 2021], "selected":[2020] },
+            "grouping": { "label": "Season", "grouped":  false },
+            "raw": {
+                "label": "Season",
+                "display": { "displayed": false, "order": 130 },
+                "sorted": { "priority": null, "desc": true }
+            }
+        },
+        {
+            "key": "opposition",
+            "selectFilters": { "options": [], "selected":[] },
+            "grouping": { "label": "Opposition", "grouped":  false },
+            "raw": {
+                "label": "Opposition",
+                "display": { "displayed": false, "order": 140 }
+            }
+        },
+        {
+            "key": "fixtureDate",
+            "raw": {
+                "label": "Date",
+                "display": { "displayed": false, "order": 150 },
+                "sorted": { "priority": null, "desc": true },
+                "formatter": "date"
+            }
+        },
+        {
+            "key": "resultType",
+            "selectFilters": { "options": [], "selected":[] },
+            "grouping": { "label": "Result", "grouped":  false },
+            "raw": {
+                "label": "Result",
+                "display": { "displayed": false, "order": 160 }
+            }
+        },
+        {
+            "key": "teamTotal",
+            "raw": {
+                "label": "Team Total",
+                "display": { "displayed": false, "order": 170 },
+                "sorted": { "priority": null, "desc": true }
+            },
+            "aggregate": {
+                "aggType": "sum",
+                "label": "Team Total",
+                "display": { "displayed": false, "order": 170 },
+                "sorted": { "priority": null, "desc": true }
+            }
+        },
+        {
+            "key": "matchType",
+            "selectFilters": { "options": [], "selected":[] },
+            "grouping": { "label": "Match Format", "grouped":  false },
+            "raw": {
+                "label": "Match Format",
+                "display": { "displayed": false, "order": 180 }
+            }
+        },
+        {
+            "key": "overLength",
+            "raw": {
+                "label": "Over Length",
+                "display": { "displayed": false, "order": 190 }
+            }
+        }
+    ],
+    "bowling": [
+        {
+            "key": "playerName",
+            "selectFilters": { "options": [], "selected":[] },
+            "grouping": { "label": "Player", "grouped":  false },
+            "raw": {
+                "label": "Player",
+                "display": { "displayed": true, "order": 10, "alwaysVisible": true },
+                "sorted": { "priority": null, "desc": false }
+            }
+        },
+        {
+            "key": "groupTerm",
+            "aggregate": {
+                "label": null,
+                "display": { "displayed": true, "order": 10, "alwaysVisible": true },
+                "sorted": { "priority": null, "desc": true }
+            }
+        },
+        {
+            "key": "wickets",
+            "raw": {
+                "label": "Wickets",
+                "display": { "displayed": true, "order": 20 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": 1, "desc": true }
+            },
+            "aggregate": {
+                "aggType": "sum",
+                "label": "Wickets",
+                "display": { "displayed": true, "order": 20 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": 1, "desc": true }
+            }
+        },
+        {
+            "key": "deliveries",
+            "raw": {
+                "label": "Deliveries",
+                "display": { "displayed": true, "order": 30 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": null, "desc": true }
+            },
+            "aggregate": {
+                "aggType": "sum",
+                "label": "Deliveries",
+                "display": { "displayed": true, "order": 30 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": null, "desc": true }
+            }
+        },
+        {
+            "key": "runs",
+            "raw": {
+                "label": "Runs",
+                "display": { "displayed": true, "order": 40 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": null, "desc": true }
+            },
+            "aggregate": {
+                "aggType": "sum",
+                "label": "Runs",
+                "display": { "displayed": true, "order": 40 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": null, "desc": true }
+            }
+        },
+        {
+            "key": "maidens",
+            "raw": {
+                "label": "Maidens",
+                "display": { "displayed": true, "order": 50 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": null, "desc": true }
+            },
+            "aggregate": {
+                "aggType": "sum",
+                "label": "Maidens",
+                "display": { "displayed": true, "order": 50 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": null, "desc": true }
+            }
+        },
+        {
+            "key": "hatTricks",
+            "raw": {
+                "label": "Hat-Tricks",
+                "display": { "displayed": true, "order": 55 },
+                "sorted": { "priority": null, "desc": true }
+            },
+            "aggregate": {
+                "aggType": "sum",
+                "label": "Hat-Tricks",
+                "display": { "displayed": true, "order": 55 },
+                "sorted": { "priority": null, "desc": true }
+            }
+        },
+        {
+            "key": "economy",
+            "raw": {
+                "label": "Economy",
+                "display": { "displayed": true, "order": 60 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": 2, "desc": false },
+                "formatter": "dec2Always"
+            },
+            "aggregate": {
+                "aggType": "complex",
+                "label": "Economy",
+                "display": { "displayed": true, "order": 60 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": 2, "desc": false },
+                "formatter": "dec2Always"
+            }
+        },
+        {
+            "key": "average",
+            "raw": {
+                "label": "Average",
+                "display": { "displayed": true, "order": 70 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": null, "desc": true },
+                "formatter": "dec2Always"
+            },
+            "aggregate": {
+                "aggType": "complex",
+                "label": "Average",
+                "display": { "displayed": true, "order": 70 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": null, "desc": true },
+                "formatter": "dec2Always"
+            }
+        },
+        {
+            "key": "strikeRate",
+            "raw": {
+                "label": "Strike Rate",
+                "display": { "displayed": true, "order": 80 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": null, "desc": false },
+                "formatter": "dec2Always"
+            },
+            "aggregate": {
+                "aggType": "complex",
+                "label": "Strike Rate",
+                "display": { "displayed": true, "order": 80 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": null, "desc": false },
+                "formatter": "dec2Always"
+            }
+        },
+        {
+            "key": "bowlerNumber",
+            "raw": {
+                "label": "Bowler No.",
+                "display": { "displayed":  false, "order":  85 },
+                "sorted": { "priority": null, "desc": false }
+            },
+            "aggregate": {
+                "aggType": "mean",
+                "label": "Avg Bowler No.",
+                "display": { "displayed":  false, "order":  85 },
+                "sorted": { "priority": null, "desc": false }
+            }
+        },
+        {
+            "key": "innings",
+            "aggregate": {
+                "aggType": "sum",
+                "label": "Innings",
+                "display": { "displayed": true, "order": 90 },
+                "sorted": { "priority": null, "desc": true },
+                "rangeFilters": { "min": 0, "max": null, "range": [] }
+            }
+        },
+        {
+            "key": "overs",
+            "raw": {
+                "label": "Overs",
+                "display": { "displayed": false, "order": 100 }
+            },
+            "aggregate": {
+                "aggType": "complex",
+                "label": "Overs",
+                "display": { "displayed": false, "order": 100 }
+            }
+        },
+        {
+            "key": "wides",
+            "raw": {
+                "label": "Wides",
+                "display": { "displayed": false, "order": 110 },
+                "sorted": { "priority": null, "desc": true }
+            },
+            "aggregate": {
+                "aggType": "sum",
+                "label": "Wides",
+                "display": { "displayed": false, "order": 110 },
+                "sorted": { "priority": null, "desc": true }
+            }
+        },
+        {
+            "key": "noBalls",
+            "raw": {
+                "label": "No Balls",
+                "display": { "displayed": false, "order": 120 },
+                "sorted": { "priority": null, "desc": true }
+            },
+            "aggregate": {
+                "aggType": "sum",
+                "label": "No Balls",
+                "display": { "displayed": false, "order": 120 },
+                "sorted": { "priority": null, "desc": true }
+            }
+        },
+        {
+            "key": "fixture",
+            "grouping": { "label": "Fixture", "grouped":  false },
+            "raw": {
+                "label": "Fixture",
+                "display": { "displayed": true, "order": 120 }
+            }
+        },
+        {
+            "key": "season",
+            "selectFilters": { "options": [2019, 2020, 2021], "selected":[2020] },
+            "grouping": { "label": "Season", "grouped":  false },
+            "raw": {
+                "label": "Season",
+                "display": { "displayed": false, "order": 130 },
+                "sorted": { "priority": null, "desc": true }
+            }
+        },
+        {
+            "key": "opposition",
+            "selectFilters": { "options": [], "selected":[] },
+            "grouping": { "label": "Opposition", "grouped":  false },
+            "raw": {
+                "label": "Opposition",
+                "display": { "displayed": false, "order": 140 }
+            }
+        },
+        {
+            "key": "fixtureDate",
+            "raw": {
+                "label": "Date",
+                "display": { "displayed": false, "order": 150 },
+                "sorted": { "priority": null, "desc": true },
+                "formatter": "date"
+            }
+        },
+        {
+            "key": "resultType",
+            "selectFilters": { "options": [], "selected":[] },
+            "grouping": { "label": "Result", "grouped":  false },
+            "raw": {
+                "label": "Result",
+                "display": { "displayed": false, "order": 160 }
+            }
+        },
+        {
+            "key": "matchType",
+            "selectFilters": { "options": [], "selected":[] },
+            "grouping": { "label": "Match Format", "grouped":  false },
+            "raw": {
+                "label": "Match Format",
+                "display": { "displayed": false, "order": 170 }
+            }
+        },
+        {
+            "key": "overLength",
+            "raw": {
+                "label": "Over Length",
+                "display": { "displayed": false, "order": 180 }
+            }
+        },
+        {
+            "key": "sumVictimRuns",
+            "aggregate": {
+                "aggType": "sum"
+            }
+        },
+        {
+            "key": "sumVictimPosition",
+            "aggregate": {
+                "aggType": "sum"
+            }
+        },
+        {
+            "key": "avgVictimRuns",
+            "raw": {
+                "label": "Avg Victim Runs",
+                "display": { "displayed": false, "order": 190 },
+                "sorted": { "priority": null, "desc": true },
+                "formatter": "dec2Always"
+            },
+            "aggregate": {
+                "aggType": "complex",
+                "label": "Avg Victim Runs",
+                "display": { "displayed": false, "order": 190 },
+                "sorted": { "priority": null, "desc": true },
+                "formatter": "dec2Always"
+            }
+        },
+        {
+            "key": "avgVictimPosition",
+            "raw": {
+                "label": "Avg Victim Position",
+                "display": { "displayed": false, "order": 200 },
+                "sorted": { "priority": null, "desc": true },
+                "formatter": "dec2Always"
+            },
+            "aggregate": {
+                "aggType": "complex",
+                "label": "Avg Victim Position",
+                "display": { "displayed": false, "order": 200 },
+                "sorted": { "priority": null, "desc": true },
+                "formatter": "dec2Always"
+            }
+        },
+        {
+            "key": "wicketsBowled",
+            "raw": {
+                "label": "Wkts (Bowled)",
+                "display": { "displayed": false, "order": 210 },
+                "sorted": { "priority": null, "desc": true }
+            },
+            "aggregate": {
+                "aggType": "sum",
+                "label": "Wkts (Bowled)",
+                "display": { "displayed": false, "order": 210 },
+                "sorted": { "priority": null, "desc": true }
+            }
+        },
+        {
+            "key": "wicketsLbw",
+            "raw": {
+                "label": "Wkts (LBW)",
+                "display": { "displayed": false, "order": 220 },
+                "sorted": { "priority": null, "desc": true }
+            },
+            "aggregate": {
+                "aggType": "sum",
+                "label": "Wkts (LBW)",
+                "display": { "displayed": false, "order": 220 },
+                "sorted": { "priority": null, "desc": true }
+            }
+        },
+        {
+            "key": "wicketsCaught",
+            "raw": {
+                "label": "Wkts (Caught)",
+                "display": { "displayed": false, "order": 230 },
+                "sorted": { "priority": null, "desc": true }
+            },
+            "aggregate": {
+                "aggType": "sum",
+                "label": "Wkts (Caught)",
+                "display": { "displayed": false, "order": 230 },
+                "sorted": { "priority": null, "desc": true }
+            }
+        },
+        {
+            "key": "wicketsStumped",
+            "raw": {
+                "label": "Wkts (Stumped)",
+                "display": { "displayed": false, "order": 240 },
+                "sorted": { "priority": null, "desc": true }
+            },
+            "aggregate": {
+                "aggType": "sum",
+                "label": "Wkts (Stumped)",
+                "display": { "displayed": false, "order": 240 },
+                "sorted": { "priority": null, "desc": true }
+            }
+        }
+    ],
+    "fielding": [
+        {
+            "key": "playerName",
+            "selectFilters": { "options": [], "selected":[] },
+            "grouping": { "label": "Player", "grouped":  false },
+            "raw": {
+                "label": "Player",
+                "display": { "displayed": true, "order": 10, "alwaysVisible": true },
+                "sorted": { "priority": null, "desc": false }
+            }
+        },
+        {
+            "key": "groupTerm",
+            "aggregate": {
+                "label": null,
+                "display": { "displayed": true, "order": 10, "alwaysVisible": true },
+                "sorted": { "priority": null, "desc": true }
+            }
+        },
+        {
+            "key": "catches",
+            "raw": {
+                "label": "Catches",
+                "display": { "displayed": true, "order": 30 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": null, "desc": true }
+            },
+            "aggregate": {
+                "aggType": "sum",
+                "label": "Catches",
+                "display": { "displayed": true, "order": 30 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": null, "desc": true }
+            }
+        },
+        {
+            "key": "runOuts",
+            "raw": {
+                "label": "Run Outs",
+                "display": { "displayed": true, "order": 40 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": null, "desc": true }
+            },
+            "aggregate": {
+                "aggType": "sum",
+                "label": "Run Outs",
+                "display": { "displayed": true, "order": 40 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": null, "desc": true }
+            }
+        },
+        {
+            "key": "stumpings",
+            "raw": {
+                "label": "Stumpings",
+                "display": { "displayed": true, "order": 50 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": null, "desc": true }
+            },
+            "aggregate": {
+                "aggType": "sum",
+                "label": "Stumpings",
+                "display": { "displayed": true, "order": 50 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": null, "desc": true }
+            }
+        },
+        {
+            "key": "wickets",
+            "raw": {
+                "label": "Total Wickets",
+                "display": { "displayed": true, "order": 60 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": 1, "desc": true }
+            },
+            "aggregate": {
+                "aggType": "sum",
+                "label": "Total Wickets",
+                "display": { "displayed": true, "order": 60 },
+                "rangeFilters": { "min": 0, "max": null, "range": [] },
+                "sorted": { "priority": 1, "desc": true }
+            }
+        },
+        {
+            "key": "fixture",
+            "grouping": { "label": "Fixture", "grouped":  false },
+            "raw": {
+                "label": "Fixture",
+                "display": { "displayed": true, "order": 70 }
+            }
+        },
+        {
+            "key": "season",
+            "selectFilters": { "options": [2019, 2020, 2021], "selected":[2020] },
+            "grouping": { "label": "Season", "grouped":  false },
+            "raw": {
+                "label": "Season",
+                "display": { "displayed": false, "order": 80 },
+                "sorted": { "priority": null, "desc": true }
+            }
+        },
+        {
+            "key": "opposition",
+            "selectFilters": { "options": [], "selected":[] },
+            "grouping": { "label": "Opposition", "grouped":  false },
+            "raw": {
+                "label": "Opposition",
+                "display": { "displayed": false, "order": 90 }
+            }
+        },
+        {
+            "key": "fixtureDate",
+            "raw": {
+                "label": "Date",
+                "display": { "displayed": false, "order": 100 },
+                "sorted": { "priority": null, "desc": true },
+                "formatter": "date"
+            }
+        },
+        {
+            "key": "resultType",
+            "selectFilters": { "options": [], "selected":[] },
+            "grouping": { "label": "Result", "grouped":  false },
+            "raw": {
+                "label": "Result",
+                "display": { "displayed": false, "order": 110 }
+            }
+        },
+        {
+            "key": "matchType",
+            "selectFilters": { "options": [], "selected":[] },
+            "grouping": { "label": "Match Format", "grouped":  false },
+            "raw": {
+                "label": "Match Format",
+                "display": { "displayed": false, "order": 120 }
+            }
+        },
+        {
+            "key": "innings",
+            "aggregate": {
+                "aggType": "sum",
+                "label": "Innings",
+                "display": { "displayed": true, "order": 130 },
+                "sorted": { "priority": null, "desc": true },
+                "rangeFilters": { "min": 0, "max": null, "range": [] }
+            }
+        }
+    ]
+}
