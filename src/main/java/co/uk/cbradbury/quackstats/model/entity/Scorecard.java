@@ -7,7 +7,7 @@ import co.uk.cbradbury.quackstats.enums.ScorecardStatus;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.Set;
+import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -49,14 +49,16 @@ public class Scorecard {
 
     private Boolean batFirst;
 
+    private Integer wicketRating;
+
     @Enumerated(EnumType.STRING)
     private ResultType resultType;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "scorecard")
-    private Set<SquadMember> squadMemberSet;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "scorecard", cascade = CascadeType.PERSIST)
+    private List<SquadMember> squadMemberList;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "scorecard")
-    private Set<Innings> inningsSet;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "scorecard", cascade = CascadeType.PERSIST)
+    private List<Innings> inningsList;
 
     public Scorecard() {
     }
@@ -165,6 +167,14 @@ public class Scorecard {
         this.batFirst = batFirst;
     }
 
+    public Integer getWicketRating() {
+        return wicketRating;
+    }
+
+    public void setWicketRating(Integer wicketRating) {
+        this.wicketRating = wicketRating;
+    }
+
     public ResultType getResultType() {
         return resultType;
     }
@@ -173,19 +183,19 @@ public class Scorecard {
         this.resultType = resultType;
     }
 
-    public Set<SquadMember> getSquadMemberSet() {
-        return squadMemberSet;
+    public List<SquadMember> getSquadMemberList() {
+        return squadMemberList;
     }
 
-    public void setSquadMemberSet(Set<SquadMember> squadMemberList) {
-        this.squadMemberSet = squadMemberList;
+    public void setSquadMemberList(List<SquadMember> squadMemberList) {
+        this.squadMemberList = squadMemberList;
     }
 
-    public Set<Innings> getInningsSet() {
-        return inningsSet;
+    public List<Innings> getInningsList() {
+        return inningsList;
     }
 
-    public void setInningsSet(Set<Innings> inningsList) {
-        this.inningsSet = inningsList;
+    public void setInningsList(List<Innings> inningsList) {
+        this.inningsList = inningsList;
     }
 }

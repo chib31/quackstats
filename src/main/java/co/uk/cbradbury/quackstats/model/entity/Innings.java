@@ -3,7 +3,7 @@ package co.uk.cbradbury.quackstats.model.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -37,14 +37,16 @@ public class Innings {
 
     private Integer noBalls;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "innings")
-    private Set<Bat> batSet;
+    private Integer penaltyRuns;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "innings")
-    private Set<Bowl> bowlSet;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "innings", cascade = CascadeType.PERSIST)
+    private List<Bat> batList;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "innings")
-    private Set<Wicket> wicketSet;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "innings", cascade = CascadeType.PERSIST)
+    private List<Bowl> bowlList;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "innings", cascade = CascadeType.PERSIST)
+    private List<Wicket> wicketList;
 
     public Innings() {
     }
@@ -137,27 +139,35 @@ public class Innings {
         this.noBalls = noBalls;
     }
 
-    public Set<Bat> getBatSet() {
-        return batSet;
+    public Integer getPenaltyRuns() {
+        return penaltyRuns;
     }
 
-    public void setBatSet(Set<Bat> batSet) {
-        this.batSet = batSet;
+    public void setPenaltyRuns(Integer penaltyRuns) {
+        this.penaltyRuns = penaltyRuns;
     }
 
-    public Set<Bowl> getBowlSet() {
-        return bowlSet;
+    public List<Bat> getBatList() {
+        return batList;
     }
 
-    public void setBowlSet(Set<Bowl> bowlSet) {
-        this.bowlSet = bowlSet;
+    public void setBatList(List<Bat> batList) {
+        this.batList = batList;
     }
 
-    public Set<Wicket> getWicketSet() {
-        return wicketSet;
+    public List<Bowl> getBowlList() {
+        return bowlList;
     }
 
-    public void setWicketSet(Set<Wicket> wicketSet) {
-        this.wicketSet = wicketSet;
+    public void setBowlList(List<Bowl> bowlList) {
+        this.bowlList = bowlList;
+    }
+
+    public List<Wicket> getWicketList() {
+        return wicketList;
+    }
+
+    public void setWicketList(List<Wicket> wicketList) {
+        this.wicketList = wicketList;
     }
 }

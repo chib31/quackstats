@@ -1,0 +1,35 @@
+{
+  "recordType": "BACKUP",
+  "scorecardStatus": "COMPLETE",
+  "teamId": 1,
+  "opponentId": 2,
+  "fixtureDetailsJson": {
+    "date": "2021-07-04",
+    "fixtureOrder": 1,
+    "location": "Hilly Fields",
+    "matchType": "LIMITED_OVERS",
+    "inningsLength": 40,
+    "wonToss": true,
+    "batFirst": true,
+    "resultType": "WON"
+  },
+  "squadMemberList": [
+    {
+      "name": "C Bradbury"
+    },
+    {
+      "name": "J Jamieson",
+      "captain": true
+    },
+    {
+      "name": "Saril"
+    },
+    {
+      "name": "M Davies"
+    },
+    {
+      "name": "M Webb",
+      "keeper": true
+    }
+  ]
+}

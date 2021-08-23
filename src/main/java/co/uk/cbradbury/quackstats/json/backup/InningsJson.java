@@ -1,23 +1,48 @@
-package co.uk.cbradbury.quackstats.json;
+package co.uk.cbradbury.quackstats.json.backup;
 
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+import javax.validation.constraints.NotNull;
+import java.util.List;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class InningsJson {
-    private Integer inningsOrder;
-    private Boolean teamIsBatting;
-    private Integer deliveries;
-    private Integer wickets;
-    private Integer runs;
-    private Integer byes;
-    private Integer legByes;
-    private Integer wides;
-    private Integer noBalls;
-    private Set<BatJson> batSet;
-    private Set<BowlJson> bowlSet;
-    private Set<WicketJson> wicketSet;
 
-    public InningsJson() {
-    }
+    @NotNull
+    private Integer inningsOrder;
+
+    @NotNull
+    private Boolean teamIsBatting;
+
+    @NotNull
+    private Integer deliveries;
+
+    @NotNull
+    private Integer wickets;
+
+    @NotNull
+    private Integer runs;
+
+    @NotNull
+    private Integer byes;
+
+    @NotNull
+    private Integer legByes;
+
+    @NotNull
+    private Integer wides;
+
+    @NotNull
+    private Integer noBalls;
+
+    @NotNull
+    private Integer penaltyRuns;
+
+    private List<BatJson> batList;
+
+    private List<BowlJson> bowlList;
+
+    private List<WicketJson> wicketList;
 
     public Integer getInningsOrder() {
         return inningsOrder;
@@ -91,27 +116,35 @@ public class InningsJson {
         this.noBalls = noBalls;
     }
 
-    public Set<BatJson> getBatSet() {
-        return batSet;
+    public Integer getPenaltyRuns() {
+        return penaltyRuns;
     }
 
-    public void setBatSet(Set<BatJson> batSet) {
-        this.batSet = batSet;
+    public void setPenaltyRuns(Integer penaltyRuns) {
+        this.penaltyRuns = penaltyRuns;
     }
 
-    public Set<BowlJson> getBowlSet() {
-        return bowlSet;
+    public List<BatJson> getBatList() {
+        return batList;
     }
 
-    public void setBowlSet(Set<BowlJson> bowlSet) {
-        this.bowlSet = bowlSet;
+    public void setBatList(List<BatJson> batList) {
+        this.batList = batList;
     }
 
-    public Set<WicketJson> getWicketSet() {
-        return wicketSet;
+    public List<BowlJson> getBowlList() {
+        return bowlList;
     }
 
-    public void setWicketSet(Set<WicketJson> wicketSet) {
-        this.wicketSet = wicketSet;
+    public void setBowlList(List<BowlJson> bowlList) {
+        this.bowlList = bowlList;
+    }
+
+    public List<WicketJson> getWicketList() {
+        return wicketList;
+    }
+
+    public void setWicketList(List<WicketJson> wicketList) {
+        this.wicketList = wicketList;
     }
 }

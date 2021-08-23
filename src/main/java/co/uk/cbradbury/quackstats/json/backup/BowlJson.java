@@ -1,24 +1,42 @@
-package co.uk.cbradbury.quackstats.json;
+package co.uk.cbradbury.quackstats.json.backup;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import javax.validation.constraints.NotNull;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BowlJson {
-    private Long SquadMemberId;
+
+    @NotNull
+    private String name;
+
+    @NotNull
     private Integer bowlerNumber;
+
     private Integer deliveries;
+
     private Integer maidens;
+
+    @NotNull
     private Integer runs;
+
+    private Integer wickets;
+
     private Integer wides;
+
     private Integer noBalls;
+
     private Integer hatTricks;
 
     public BowlJson() {
     }
 
-    public Long getSquadMemberId() {
-        return SquadMemberId;
+    public String getName() {
+        return name;
     }
 
-    public void setSquadMemberId(Long squadMemberId) {
-        SquadMemberId = squadMemberId;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getBowlerNumber() {
@@ -51,6 +69,14 @@ public class BowlJson {
 
     public void setRuns(Integer runs) {
         this.runs = runs;
+    }
+
+    public Integer getWickets() {
+        return wickets;
+    }
+
+    public void setWickets(Integer wickets) {
+        this.wickets = wickets;
     }
 
     public Integer getWides() {

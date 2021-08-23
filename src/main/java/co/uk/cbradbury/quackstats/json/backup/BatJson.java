@@ -1,30 +1,47 @@
-package co.uk.cbradbury.quackstats.json;
+package co.uk.cbradbury.quackstats.json.backup;
 
 import co.uk.cbradbury.quackstats.enums.BattingConclusion;
 import co.uk.cbradbury.quackstats.enums.FieldingLocation;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+import javax.validation.constraints.NotNull;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BatJson {
-    private Long squadMemberId;
+
+    @NotNull
+    private String name;
+
+    @NotNull
     private Integer position;
+
     private Integer deliveries;
+
+    @NotNull
     private Integer runs;
+
     private Integer fours;
+
     private Integer sixes;
+
+    @NotNull
     private BattingConclusion battingConclusion;
-    private Integer notOuts;
+
     private String wicketFielder;
+
     private String wicketBowler;
+
     private FieldingLocation whereCaught;
 
     public BatJson() {
     }
 
-    public Long getSquadMemberId() {
-        return squadMemberId;
+    public String getName() {
+        return name;
     }
 
-    public void setSquadMemberId(Long squadMemberId) {
-        this.squadMemberId = squadMemberId;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getPosition() {
@@ -73,14 +90,6 @@ public class BatJson {
 
     public void setBattingConclusion(BattingConclusion battingConclusion) {
         this.battingConclusion = battingConclusion;
-    }
-
-    public Integer getNotOuts() {
-        return notOuts;
-    }
-
-    public void setNotOuts(Integer notOuts) {
-        this.notOuts = notOuts;
     }
 
     public String getWicketFielder() {

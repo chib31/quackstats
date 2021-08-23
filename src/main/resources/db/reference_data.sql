@@ -3,8 +3,7 @@ WITH this_team AS (
   VALUES (default, 'ed127c92-72e6-11eb-9439-0242ac130002', 'Plastics CC')
   RETURNING id
 )
-INSERT INTO player (id, uuid, main_team_id, first_name, middle_names, last_name, preferred_name, scorecard_name, cap_number,
-membership_start, shirt_number)
+INSERT INTO player (id, uuid, main_team_id, first_name, middle_names, last_name, preferred_name, scorecard_name, cap_number, membership_start, shirt_number)
 VALUES
   (default, 'ed129ba0-72e6-11eb-9439-0242ac130002', (SELECT id FROM this_team), 'Saril', NULL, NULL, NULL, 'Saril', 1, '2016-09-11', 0)
 , (default, 'ed129c5e-72e6-11eb-9439-0242ac130002', (SELECT id FROM this_team), 'Jamie', NULL, 'Doy', NULL, 'J Doy', 2, '2016-09-11', 9)
@@ -62,6 +61,16 @@ VALUES
 , (default, 'ed12d37c-72e6-11eb-9439-0242ac130002', (SELECT id FROM this_team), 'Pramol', NULL, NULL, NULL, 'Pramol', NULL, NULL, NULL)
 , (default, 'ed12d430-72e6-11eb-9439-0242ac130002', (SELECT id FROM this_team), 'Richard', NULL, NULL, NULL, 'Richard', NULL, NULL, NULL)
 , (default, 'ed12d4ee-72e6-11eb-9439-0242ac130002', (SELECT id FROM this_team), 'Rachel', NULL, 'Brandon', NULL, 'R Brandon', 32, '2021-01-31', 2)
+, (default, null, (SELECT id FROM this_team), 'Chris', NULL, 'Milton', NULL, 'C Milton', NULL, NULL, NULL)
+, (default, null, (SELECT id FROM this_team), 'Bruce', NULL, 'Torrance', NULL, 'B Torrance', NULL, NULL, NULL)
+, (default, null, (SELECT id FROM this_team), 'Fred', NULL, 'Combe', NULL, 'F Combe', NULL, NULL, NULL)
+, (default, null, (SELECT id FROM this_team), 'Murtaza', NULL, 'Rizvi', NULL, 'M Rizvi', NULL, NULL, NULL)
+, (default, null, (SELECT id FROM this_team), 'Varun', NULL, 'Devjani', NULL, 'V Devjani', NULL, NULL, NULL)
+, (default, null, (SELECT id FROM this_team), 'Josh', NULL, 'Dangerfield', NULL, 'J Dangerfield', NULL, NULL, NULL)
+, (default, null, (SELECT id FROM this_team), 'Jack', NULL, 'Schofield', NULL, 'J Schofield', NULL, NULL, NULL)
+, (default, null, (SELECT id FROM this_team), 'Charlie', NULL, 'Scoular', NULL, 'C Scoular', NULL, NULL, NULL)
+, (default, null, (SELECT id FROM this_team), 'Pip', NULL, 'Marshall', NULL, 'P Marshall', NULL, NULL, NULL)
+, (default, null, (SELECT id FROM this_team), 'Rufus', NULL, 'Hawkings', NULL, 'R Hawkings', NULL, NULL, NULL)
 ;
 
 INSERT INTO team (id, uuid, name)
@@ -94,4 +103,10 @@ VALUES
 , (default, 'ed129984-72e6-11eb-9439-0242ac130002', 'Bricklayers Arms')
 , (default, 'ed129a38-72e6-11eb-9439-0242ac130002', 'Top Knockers CC')
 , (default, 'ed129ae2-72e6-11eb-9439-0242ac130002', 'Amigos CC')
+, (default, null, 'Butterlords CC')
+, (default, null, 'Winchmore Hill Lions')
+, (default, null, 'Woodford Green')
+, (default, null, 'Roehampton Bats')
+, (default, null, 'Dragons CC')
+, (default, null, 'Journeymen CC')
 ;

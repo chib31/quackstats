@@ -1,33 +1,46 @@
-package co.uk.cbradbury.quackstats.json;
+package co.uk.cbradbury.quackstats.json.backup;
 
 import co.uk.cbradbury.quackstats.enums.BattingConclusion;
 import co.uk.cbradbury.quackstats.enums.FieldingLocation;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+import javax.validation.constraints.NotNull;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class WicketJson {
-    private Long bowlerSquadMemberId;
-    private Long fielderSquadMemberId;
+
+    @NotNull
+    private String bowlerName;
+
+    @NotNull
+    private String fielderName;
+
+    @NotNull
     private BattingConclusion battingConclusion;
+
     private Integer battingPosition;
+
     private Integer batterRuns;
+
     private FieldingLocation fieldingLocation;
 
     public WicketJson() {
     }
 
-    public Long getBowlerSquadMemberId() {
-        return bowlerSquadMemberId;
+    public String getBowlerName() {
+        return bowlerName;
     }
 
-    public void setBowlerSquadMemberId(Long bowlerSquadMemberId) {
-        this.bowlerSquadMemberId = bowlerSquadMemberId;
+    public void setBowlerName(String bowlerName) {
+        this.bowlerName = bowlerName;
     }
 
-    public Long getFielderSquadMemberId() {
-        return fielderSquadMemberId;
+    public String getFielderName() {
+        return fielderName;
     }
 
-    public void setFielderSquadMemberId(Long fielderSquadMemberId) {
-        this.fielderSquadMemberId = fielderSquadMemberId;
+    public void setFielderName(String fielderName) {
+        this.fielderName = fielderName;
     }
 
     public BattingConclusion getBattingConclusion() {

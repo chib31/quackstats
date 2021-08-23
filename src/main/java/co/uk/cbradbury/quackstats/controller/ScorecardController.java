@@ -1,18 +1,9 @@
 package co.uk.cbradbury.quackstats.controller;
 
-import co.uk.cbradbury.quackstats.exception.NotFoundException;
-import co.uk.cbradbury.quackstats.json.*;
 import co.uk.cbradbury.quackstats.service.ScorecardService;
 import co.uk.cbradbury.quackstats.service.TeamService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/scorecard")
@@ -27,72 +18,70 @@ public class ScorecardController {
         this.teamService = teamService;
     }
 
-    @PutMapping
-    public ResponseEntity<?> createNewScorecard(@Valid @RequestBody FixtureDetailsJson fixtureDetailsJson) {
-        var teamId = fixtureDetailsJson.getTeamId();
-        var team = teamService.findTeamById(teamId).orElseThrow(
-                () -> new NotFoundException(String.format("No team with ID %s", teamId)));
+//    @PutMapping
+//    public ResponseEntity<?> createNewScorecard(@Valid @RequestBody FixtureDetailsJson fixtureDetailsJson) {
+//        var team = teamService.findTeamById(fixtureDetailsJson.getTeamId()).orElseThrow(
+//                () -> new NotFoundException(String.format("No team with ID %s", fixtureDetailsJson.getTeamId())));
+//
+//        var opponent = teamService.findTeamById(fixtureDetailsJson.getOpponentId()).orElseThrow(
+//                () -> new NotFoundException(String.format("No team with ID %s", fixtureDetailsJson.getOpponentId())));
+//
+//        var scorecard = scorecardService.createNewScorecard(fixtureDetailsJson, team, opponent);
+//
+//        return new ResponseEntity<>(scorecard.getId(), HttpStatus.CREATED);
+//    }
 
-        var opponentId = fixtureDetailsJson.getTeamId();
-        var opponent = teamService.findTeamById(teamId).orElseThrow(
-                () -> new NotFoundException(String.format("No team with ID %s", opponentId)));
-
-        var scorecard = scorecardService.createNewScorecard(fixtureDetailsJson, team, opponent);
-
-        return new ResponseEntity<>(scorecard.getId(), HttpStatus.CREATED);
-    }
-
-    // TODO - implement the pattern used here (i.e. fetching the entities in the controller for validation, then again in the service for usage) in the other endpoints
-    @PostMapping("/{scorecardId}/set-squad-members")
-    public ResponseEntity<?> setSquadMembers(@PathVariable Long scorecardId,
-                                             @RequestBody List<SquadMemberJson> squadMemberJsonList) {
-
-        var scorecard = scorecardService.findScorecardById(scorecardId).orElseThrow(
-                () -> new NotFoundException(String.format("No scorecard with ID %s", scorecardId)));
-
-        for (var squadMemberJson : squadMemberJsonList) {
-            var playerId = squadMemberJson.getPlayerId();
-            teamService.findPlayerById(playerId).orElseThrow(
-                    () -> new NotFoundException(String.format("No player with ID %s", playerId)));
-        }
-
-        var squadMemberList = scorecardService.setSquadMembers(scorecard, squadMemberJsonList);
-
-        return new ResponseEntity<>(squadMemberList, HttpStatus.CREATED);
-    }
-
-    @PutMapping("/{scorecardId}/add-innings")
-    public ResponseEntity<?> addInnings(@PathVariable Long scorecardId,
-                                        @RequestBody InningsJson inningsJson) {
-
-        var scorecard = scorecardService.findScorecardById(scorecardId).orElseThrow(
-                () -> new NotFoundException(String.format("No scorecard with ID %s", scorecardId)));
-
-
-        Set<Long> squadMemberIdSet = new HashSet<>();
-
-        squadMemberIdSet.addAll(inningsJson.getBatSet().stream().map(BatJson::getSquadMemberId)
-                .collect(Collectors.toSet()));
-        squadMemberIdSet.addAll(inningsJson.getBowlSet().stream().map(BowlJson::getSquadMemberId)
-                .collect(Collectors.toSet()));
-
-        Set<WicketJson> wicketList = inningsJson.getWicketSet();
-        squadMemberIdSet.addAll(wicketList.stream().map(WicketJson::getFielderSquadMemberId)
-                .collect(Collectors.toSet()));
-        squadMemberIdSet.addAll(wicketList.stream().map(WicketJson::getBowlerSquadMemberId)
-                .collect(Collectors.toSet()));
-
-        squadMemberIdSet.remove(null);
-
-        for (var squadMemberId : squadMemberIdSet) {
-            scorecardService.findSquadMemberById(squadMemberId).orElseThrow(
-                    () -> new NotFoundException(String.format("No squad member with ID %s", squadMemberId)));
-        }
-
-        var innings = scorecardService.addInnings(scorecard, inningsJson);
-
-        return new ResponseEntity<>(innings.getId(), HttpStatus.CREATED);
-    }
+//    // TODO - implement the pattern used here (i.e. fetching the entities in the controller for validation, then again in the service for usage) in the other endpoints
+//    @PostMapping("/{scorecardId}/set-squad-members")
+//    public ResponseEntity<?> setSquadMembers(@PathVariable Long scorecardId,
+//                                             @RequestBody List<SquadMemberJson> squadMemberJsonList) {
+//
+//        var scorecard = scorecardService.findScorecardById(scorecardId).orElseThrow(
+//                () -> new NotFoundException(String.format("No scorecard with ID %s", scorecardId)));
+//
+//        for (var squadMemberJson : squadMemberJsonList) {
+//            var playerId = squadMemberJson.getPlayerId();
+//            teamService.findPlayerById(playerId).orElseThrow(
+//                    () -> new NotFoundException(String.format("No player with ID %s", playerId)));
+//        }
+//
+//        var squadMemberList = scorecardService.setSquadMembers(scorecard, squadMemberJsonList);
+//
+//        return new ResponseEntity<>(squadMemberList, HttpStatus.CREATED);
+//    }
+//
+//    @PutMapping("/{scorecardId}/add-innings")
+//    public ResponseEntity<?> addInnings(@PathVariable Long scorecardId,
+//                                        @RequestBody InningsJson inningsJson) {
+//
+//        var scorecard = scorecardService.findScorecardById(scorecardId).orElseThrow(
+//                () -> new NotFoundException(String.format("No scorecard with ID %s", scorecardId)));
+//
+//
+//        Set<Long> squadMemberIdSet = new HashSet<>();
+//
+//        squadMemberIdSet.addAll(inningsJson.getBatSet().stream().map(BatJson::getSquadMemberId)
+//                .collect(Collectors.toSet()));
+//        squadMemberIdSet.addAll(inningsJson.getBowlSet().stream().map(BowlJson::getSquadMemberId)
+//                .collect(Collectors.toSet()));
+//
+//        Set<WicketJson> wicketList = inningsJson.getWicketSet();
+//        squadMemberIdSet.addAll(wicketList.stream().map(WicketJson::getFielderSquadMemberId)
+//                .collect(Collectors.toSet()));
+//        squadMemberIdSet.addAll(wicketList.stream().map(WicketJson::getBowlerSquadMemberId)
+//                .collect(Collectors.toSet()));
+//
+//        squadMemberIdSet.remove(null);
+//
+//        for (var squadMemberId : squadMemberIdSet) {
+//            scorecardService.findSquadMemberById(squadMemberId).orElseThrow(
+//                    () -> new NotFoundException(String.format("No squad member with ID %s", squadMemberId)));
+//        }
+//
+//        var innings = scorecardService.addInnings(scorecard, inningsJson);
+//
+//        return new ResponseEntity<>(innings.getId(), HttpStatus.CREATED);
+//    }
 
 //    @PutMapping("/innings/{inningsId}/add-batting")
 //    public ResponseEntity<?> addPlayerBatting(@PathVariable Long inningsId,

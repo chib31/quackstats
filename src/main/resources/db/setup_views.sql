@@ -65,10 +65,10 @@ CREATE OR REPLACE VIEW bowling_stats AS (
   FROM bowl b
   JOIN innings i on b.innings_id = i.id
   JOIN squad_member sm on b.squad_member_id = sm.id
-  JOIN wicket_agg w ON w.bowler_sm_id = sm.id
   JOIN player p on sm.player_id = p.id
   JOIN scorecard s on i.scorecard_id = s.id
   JOIN team o on s.opponent_id = o.id
+  LEFT JOIN wicket_agg w ON w.bowler_sm_id = sm.id
 );
 
 CREATE OR REPLACE VIEW fielding_stats AS (

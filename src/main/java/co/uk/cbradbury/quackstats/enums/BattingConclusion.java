@@ -16,20 +16,20 @@ public enum BattingConclusion {
     TIMED_OUT("Timed out", true, true),
     OTHER("Other", true, true);
 
-    private final String value;
+    private final String description;
 
     private final boolean isInnings;
 
     private final boolean isWicket;
 
-    BattingConclusion(String value, boolean isInnings, boolean isWicket) {
-        this.value = value;
+    BattingConclusion(String description, boolean isInnings, boolean isWicket) {
+        this.description = description;
         this.isInnings = isInnings;
         this.isWicket = isWicket;
     }
 
-    public String getValue() {
-        return value;
+    public String getDescription() {
+        return description;
     }
 
     public boolean isInnings() {

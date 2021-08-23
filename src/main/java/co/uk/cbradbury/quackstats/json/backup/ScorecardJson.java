@@ -1,31 +1,36 @@
-package co.uk.cbradbury.quackstats.json;
+package co.uk.cbradbury.quackstats.json.backup;
 
 import co.uk.cbradbury.quackstats.enums.MatchType;
-import co.uk.cbradbury.quackstats.enums.RecordType;
 import co.uk.cbradbury.quackstats.enums.ResultType;
 import co.uk.cbradbury.quackstats.enums.ScorecardStatus;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.persistence.Enumerated;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
+import java.util.List;
 
-public class FixtureDetailsJson {
-    private Long id;
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ScorecardJson {
 
-    private RecordType recordType;
-
-    private ScorecardStatus scorecardStatus;
-
+    @NotNull
     private Long teamId;
 
-    private Long opponentId;
+    @NotNull
+    private ScorecardStatus scorecardStatus;
 
+    @NotNull
+    private String opponentName;
+    
+    @NotNull
     private Date date;
 
+    @NotNull
     private Integer fixtureOrder;
 
     private String location;
 
-    @Enumerated
+    @NotNull
     private MatchType matchType;
 
     private Integer inningsLength;
@@ -34,28 +39,23 @@ public class FixtureDetailsJson {
 
     private Boolean wonToss;
 
+    @NotNull
     private Boolean batFirst;
 
-    @Enumerated
+    @NotNull
     private ResultType resultType;
 
-    public FixtureDetailsJson() {
+    @Valid
+    private List<SquadMemberJson> squadMemberList;
+
+    private List<InningsJson> inningsList;
+
+    public Long getTeamId() {
+        return teamId;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public RecordType getRecordType() {
-        return recordType;
-    }
-
-    public void setRecordType(RecordType recordType) {
-        this.recordType = recordType;
+    public void setTeamId(Long teamId) {
+        this.teamId = teamId;
     }
 
     public ScorecardStatus getScorecardStatus() {
@@ -66,20 +66,12 @@ public class FixtureDetailsJson {
         this.scorecardStatus = scorecardStatus;
     }
 
-    public Long getTeamId() {
-        return teamId;
+    public String getOpponentName() {
+        return opponentName;
     }
 
-    public void setTeamId(Long teamId) {
-        this.teamId = teamId;
-    }
-
-    public Long getOpponentId() {
-        return opponentId;
-    }
-
-    public void setOpponentId(Long opponentId) {
-        this.opponentId = opponentId;
+    public void setOpponentName(String opponentName) {
+        this.opponentName = opponentName;
     }
 
     public Date getDate() {
@@ -152,5 +144,21 @@ public class FixtureDetailsJson {
 
     public void setResultType(ResultType resultType) {
         this.resultType = resultType;
+    }
+
+    public List<SquadMemberJson> getSquadMemberList() {
+        return squadMemberList;
+    }
+
+    public void setSquadMemberList(List<SquadMemberJson> squadMemberList) {
+        this.squadMemberList = squadMemberList;
+    }
+
+    public List<InningsJson> getInningsList() {
+        return inningsList;
+    }
+
+    public void setInningsList(List<InningsJson> inningsList) {
+        this.inningsList = inningsList;
     }
 }

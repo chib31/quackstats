@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -20,17 +21,21 @@ public class Bat {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "squad_member_id")
     @JsonIgnoreProperties(value = {"captain", "keeper", "player"})
+    @NotNull
     private SquadMember squadMember;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "innings_id")
+    @NotNull
     private Innings innings;
 
+    @NotNull
     private Integer position;
 
     private Integer deliveries;
 
+    @NotNull
     private Integer runs;
 
     private Integer fours;
@@ -38,6 +43,7 @@ public class Bat {
     private Integer sixes;
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     private BattingConclusion battingConclusion;
 
     private String wicketFielder;

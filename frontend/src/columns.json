@@ -197,7 +197,7 @@
         },
         {
             "key": "season",
-            "selectFilters": { "options": [2019, 2020, 2021], "selected":[2020] },
+            "selectFilters": { "options": [2019, 2020, 2021], "selected":[2021] },
             "grouping": { "label": "Season", "grouped":  false },
             "raw": {
                 "label": "Season",
@@ -350,13 +350,13 @@
             "key": "hatTricks",
             "raw": {
                 "label": "Hat-Tricks",
-                "display": { "displayed": true, "order": 55 },
+                "display": { "displayed": false, "order": 55 },
                 "sorted": { "priority": null, "desc": true }
             },
             "aggregate": {
                 "aggType": "sum",
                 "label": "Hat-Tricks",
-                "display": { "displayed": true, "order": 55 },
+                "display": { "displayed": false, "order": 55 },
                 "sorted": { "priority": null, "desc": true }
             }
         },
@@ -488,7 +488,7 @@
         },
         {
             "key": "season",
-            "selectFilters": { "options": [2019, 2020, 2021], "selected":[2020] },
+            "selectFilters": { "options": [2019, 2020, 2021], "selected":[2021] },
             "grouping": { "label": "Season", "grouped":  false },
             "raw": {
                 "label": "Season",
@@ -733,7 +733,7 @@
         },
         {
             "key": "season",
-            "selectFilters": { "options": [2019, 2020, 2021], "selected":[2020] },
+            "selectFilters": { "options": [2019, 2020, 2021], "selected":[2021] },
             "grouping": { "label": "Season", "grouped":  false },
             "raw": {
                 "label": "Season",
