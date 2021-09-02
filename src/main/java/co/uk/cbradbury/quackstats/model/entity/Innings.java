@@ -1,20 +1,14 @@
 package co.uk.cbradbury.quackstats.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
-import java.util.List;
-
-import static javax.persistence.GenerationType.IDENTITY;
+import java.util.UUID;
 
 @Entity(name = "innings")
 public class Innings {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private final UUID id;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "scorecard_id")
     private Scorecard scorecard;
@@ -39,24 +33,12 @@ public class Innings {
 
     private Integer penaltyRuns;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "innings", cascade = CascadeType.PERSIST)
-    private List<Bat> batList;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "innings", cascade = CascadeType.PERSIST)
-    private List<Bowl> bowlList;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "innings", cascade = CascadeType.PERSIST)
-    private List<Wicket> wicketList;
-
     public Innings() {
+        this.id = UUID.randomUUID();
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Scorecard getScorecard() {
@@ -145,29 +127,5 @@ public class Innings {
 
     public void setPenaltyRuns(Integer penaltyRuns) {
         this.penaltyRuns = penaltyRuns;
-    }
-
-    public List<Bat> getBatList() {
-        return batList;
-    }
-
-    public void setBatList(List<Bat> batList) {
-        this.batList = batList;
-    }
-
-    public List<Bowl> getBowlList() {
-        return bowlList;
-    }
-
-    public void setBowlList(List<Bowl> bowlList) {
-        this.bowlList = bowlList;
-    }
-
-    public List<Wicket> getWicketList() {
-        return wicketList;
-    }
-
-    public void setWicketList(List<Wicket> wicketList) {
-        this.wicketList = wicketList;
     }
 }

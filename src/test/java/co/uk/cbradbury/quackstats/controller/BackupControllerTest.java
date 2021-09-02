@@ -1,6 +1,6 @@
 package co.uk.cbradbury.quackstats.controller;
 
-import co.uk.cbradbury.quackstats.json.backup.ScorecardJson;
+import co.uk.cbradbury.quackstats.json.ScorecardJson;
 import co.uk.cbradbury.quackstats.model.entity.Scorecard;
 import co.uk.cbradbury.quackstats.service.BackupService;
 import org.apache.commons.io.IOUtils;
@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Optional;
+import java.util.UUID;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.Mockito.when;
@@ -48,8 +49,9 @@ class BackupControllerTest {
     @Test
     void getScorecardJson() throws Exception {
         var testScorecard = new Scorecard();
+        UUID id = testScorecard.getId();
 
-        when(backupService.findScorecardById(1L)).thenReturn(Optional.of(testScorecard));
+        when(backupService.findScorecardById(id)).thenReturn(Optional.of(testScorecard));
 
         when(backupService.fetchScorecardJson(testScorecard)).thenReturn(new ScorecardJson());
 

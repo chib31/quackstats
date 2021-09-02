@@ -1,11 +1,13 @@
-package co.uk.cbradbury.quackstats.json.backup;
+package co.uk.cbradbury.quackstats.json;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
+@JsonInclude(NON_NULL)
 public class InningsJson {
 
     @NotNull

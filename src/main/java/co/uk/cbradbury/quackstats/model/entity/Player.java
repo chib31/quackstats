@@ -1,26 +1,15 @@
 package co.uk.cbradbury.quackstats.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.Set;
 import java.util.UUID;
-
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity(name = "player")
 public class Player {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private UUID id;
 
-    @JsonValue
-    private final UUID uuid = UUID.randomUUID();
-
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "main_team_id")
     private Team mainTeam;
@@ -41,23 +30,16 @@ public class Player {
 
     private Integer shirtNumber;
 
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "player")
-    private Set<SquadMember> squadMemberSet;
-
     public Player() {
+        this.id = UUID.randomUUID();
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
+    public Player(UUID id) {
         this.id = id;
     }
 
-    public UUID getUuid() {
-        return uuid;
+    public UUID getId() {
+        return id;
     }
 
     public Team getMainTeam() {
@@ -130,13 +112,5 @@ public class Player {
 
     public void setShirtNumber(Integer shirtNumber) {
         this.shirtNumber = shirtNumber;
-    }
-
-    public Set<SquadMember> getSquadMemberSet() {
-        return squadMemberSet;
-    }
-
-    public void setSquadMemberSet(Set<SquadMember> squadMemberSet) {
-        this.squadMemberSet = squadMemberSet;
     }
 }

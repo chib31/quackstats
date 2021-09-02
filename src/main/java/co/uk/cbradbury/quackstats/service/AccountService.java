@@ -1,8 +1,10 @@
 package co.uk.cbradbury.quackstats.service;
 
 import co.uk.cbradbury.quackstats.enums.AccountRole;
+import co.uk.cbradbury.quackstats.exception.QuackstatsException;
 import co.uk.cbradbury.quackstats.model.entity.Account;
 import co.uk.cbradbury.quackstats.model.repository.AccountRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,12 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Value("${quackstats.adminuser.user}")
+    private String adminUsername;
+
+    @Value("${quackstats.adminuser.password}")
+    private String adminPassword;
+
     public AccountService(AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
         this.accountRepository = accountRepository;
         this.passwordEncoder = passwordEncoder;
@@ -23,8 +31,14 @@ public class AccountService {
 
     @PostConstruct
     public void initialize() {
-        if(accountRepository.findByUsername("admin").isEmpty()) {
-            save(new Account("admin", "password", AccountRole.ADMIN.name()));
+        if(accountRepository.findByUsername(adminUsername).isEmpty()) {
+            if (adminUsername == null || adminUsername.isEmpty()) {
+                throw new QuackstatsException("Error creating default user: username was null");
+            } else if (adminPassword == null || adminPassword.isEmpty()) {
+                throw new QuackstatsException("Error creating default user: password was null");
+            }
+
+            save(new Account(adminUsername, adminPassword, AccountRole.ADMIN.name()));
         }
     }
 

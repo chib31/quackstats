@@ -17,3 +17,4 @@ out/
 ### Quackstats ###
 /src/main/resources/db/util
 /TODO.txt
+/refdata

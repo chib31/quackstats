@@ -1,67 +1,33 @@
 package co.uk.cbradbury.quackstats.controller;
 
 import co.uk.cbradbury.quackstats.exception.NotFoundException;
-import co.uk.cbradbury.quackstats.json.PlayerJson;
 import co.uk.cbradbury.quackstats.service.StatsService;
+import co.uk.cbradbury.quackstats.service.TeamService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.UUID;
 
-@CrossOrigin
 @RestController
 public class StatsController {
 
     private final StatsService statsService;
 
-    public StatsController(StatsService statsService) {
+    private final TeamService teamService;
+
+    public StatsController(StatsService statsService, TeamService teamService) {
         this.statsService = statsService;
-    }
-
-    @PutMapping("/add-team")
-    public ResponseEntity<?> addTeam(@RequestBody String teamName) {
-        if (statsService.teamNameExists(teamName)) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
-            statsService.addTeam(teamName);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        }
-    }
-
-    @PutMapping("/add-player")
-    public ResponseEntity<?> addPlayer(@RequestBody PlayerJson newPlayerJson) {
-        var teamId = newPlayerJson.getTeamId();
-        var team = statsService.getTeamFromId(teamId).orElseThrow(
-                () -> new NotFoundException(String.format("No team with ID %s", teamId.toString())));
-
-        statsService.addPlayer(newPlayerJson, team);
-
-        return new ResponseEntity<>(HttpStatus.CREATED);
-
-    }
-
-    @GetMapping("/all-teams")
-    public ResponseEntity<?> getPlayersInTeam() {
-        var responseBody = new HashMap<>();
-        responseBody.put("teamList", statsService.getAllTeams());
-        return new ResponseEntity<>(responseBody, HttpStatus.OK);
-    }
-
-    @GetMapping("/players-in-team/{teamId}")
-    public ResponseEntity<?> getPlayersInTeam(@PathVariable Long teamId) {
-        var team = statsService.getTeamFromId(teamId).orElseThrow(
-                () -> new NotFoundException(String.format("No team with ID %s", teamId.toString())));
-
-        var responseBody = new HashMap<>();
-        responseBody.put("playerList", statsService.getPlayersInTeam(team));
-        return new ResponseEntity<>(responseBody, HttpStatus.OK);
+        this.teamService = teamService;
     }
 
     @GetMapping("/stats/{teamId}/batting")
-    public ResponseEntity<?> fetchBattingStats(@PathVariable Long teamId) {
-        var team = statsService.getTeamFromId(teamId).orElseThrow(
-                () -> new NotFoundException(String.format("No team with ID %s", teamId.toString())));
+    public ResponseEntity<?> fetchBattingStats(@PathVariable UUID teamId) {
+        var team = teamService.fetchTeamById(teamId).orElseThrow(
+                () -> new NotFoundException(String.format("No team with ID %s", teamId)));
 
         var responseBody = new HashMap<>();
         responseBody.put("stats", statsService.fetchBattingStats(team));
@@ -69,9 +35,9 @@ public class StatsController {
     }
 
     @GetMapping("/stats/{teamId}/bowling")
-    public ResponseEntity<?> fetchBowlingStats(@PathVariable Long teamId) {
-        var team = statsService.getTeamFromId(teamId).orElseThrow(
-                () -> new NotFoundException(String.format("No team with ID %s", teamId.toString())));
+    public ResponseEntity<?> fetchBowlingStats(@PathVariable UUID teamId) {
+        var team = teamService.fetchTeamById(teamId).orElseThrow(
+                () -> new NotFoundException(String.format("No team with ID %s", teamId)));
 
         var responseBody = new HashMap<>();
         responseBody.put("stats", statsService.fetchBowlingStats(team));
@@ -79,9 +45,9 @@ public class StatsController {
     }
 
     @GetMapping("/stats/{teamId}/fielding")
-    public ResponseEntity<?> fetchFieldingStats(@PathVariable Long teamId) {
-        var team = statsService.getTeamFromId(teamId).orElseThrow(
-                () -> new NotFoundException(String.format("No team with ID %s", teamId.toString())));
+    public ResponseEntity<?> fetchFieldingStats(@PathVariable UUID teamId) {
+        var team = teamService.fetchTeamById(teamId).orElseThrow(
+                () -> new NotFoundException(String.format("No team with ID %s", teamId)));
 
         var responseBody = new HashMap<>();
         responseBody.put("stats", statsService.fetchFieldingStats(team));

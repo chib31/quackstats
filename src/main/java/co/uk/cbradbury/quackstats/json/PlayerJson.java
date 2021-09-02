@@ -1,12 +1,19 @@
 package co.uk.cbradbury.quackstats.json;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
+import java.util.UUID;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
+@JsonInclude(NON_NULL)
 public class PlayerJson {
-    private Long id;
 
-    private Boolean member;
+    private UUID id;
 
+    @NotNull
     private String scorecardName;
 
     private String firstName;
@@ -17,31 +24,26 @@ public class PlayerJson {
 
     private String preferredName;
 
-    private Long teamId;
+    @NotNull
+    private UUID teamId;
 
     private Date membershipStart;
 
     private Integer capNumber;
+
+    private Boolean member;
 
     private Integer shirtNumber;
 
     public PlayerJson() {
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
-    }
-
-    public Boolean getMember() {
-        return member;
-    }
-
-    public void setMember(Boolean member) {
-        this.member = member;
     }
 
     public String getScorecardName() {
@@ -84,11 +86,11 @@ public class PlayerJson {
         this.preferredName = preferredName;
     }
 
-    public Long getTeamId() {
+    public UUID getTeamId() {
         return teamId;
     }
 
-    public void setTeamId(Long teamId) {
+    public void setTeamId(UUID teamId) {
         this.teamId = teamId;
     }
 
@@ -106,6 +108,14 @@ public class PlayerJson {
 
     public void setCapNumber(Integer capNumber) {
         this.capNumber = capNumber;
+    }
+
+    public Boolean getMember() {
+        return member;
+    }
+
+    public void setMember(Boolean member) {
+        this.member = member;
     }
 
     public Integer getShirtNumber() {

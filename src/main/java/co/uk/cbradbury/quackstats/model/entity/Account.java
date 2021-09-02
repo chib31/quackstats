@@ -1,16 +1,14 @@
 package co.uk.cbradbury.quackstats.model.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.UUID;
 
 @Entity
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private final UUID id;
 
     private String username;
 
@@ -18,9 +16,12 @@ public class Account {
 
     private String role;
 
-    public Account() {}
+    public Account() {
+        this.id = UUID.randomUUID();
+    }
 
     public Account(String username, String password, String role) {
+        this.id = UUID.randomUUID();
         this.username = username;
         this.password = password;
         this.role = role;
@@ -35,12 +36,8 @@ public class Account {
                 '}';
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getUsername() {

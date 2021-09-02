@@ -1,26 +1,18 @@
 package co.uk.cbradbury.quackstats.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
-
-import static javax.persistence.GenerationType.IDENTITY;
+import java.util.UUID;
 
 @Entity(name = "bowl")
 public class Bowl {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @JsonIgnore
-    private Long id;
+    private final UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "squad_member_id")
-    @JsonIgnoreProperties(value = {"captain", "keeper", "player"})
     private SquadMember squadMember;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "innings_id")
     private Innings innings;
@@ -42,10 +34,11 @@ public class Bowl {
     private Integer hatTricks;
 
     public Bowl() {
+        this.id = UUID.randomUUID();
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public UUID getId() {
+        return id;
     }
 
     public SquadMember getSquadMember() {

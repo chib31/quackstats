@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "quackstats.adminuser.user",
+      "type": "java.lang.String",
+      "description": "User name for default admin user."
+    },
+    {
+      "name": "quackstats.adminuser.password",
+      "type": "java.lang.String",
+      "description": "Initial password for default admin user."
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-package co.uk.cbradbury.quackstats.json.backup;
+package co.uk.cbradbury.quackstats.json;
 
 import co.uk.cbradbury.quackstats.enums.BattingConclusion;
 import co.uk.cbradbury.quackstats.enums.FieldingLocation;
@@ -6,7 +6,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
+@JsonInclude(NON_NULL)
 public class WicketJson {
 
     @NotNull

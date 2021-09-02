@@ -7,9 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface PlayerRepository extends CrudRepository<Player, Long> {
+public interface PlayerRepository extends CrudRepository<Player, UUID> {
     List<Player> findByMainTeam(Team mainTeam);
 
     Optional<Player> findByScorecardNameAndMainTeam(String scorecardName, Team mainTeam);

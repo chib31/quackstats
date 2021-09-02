@@ -1,40 +1,32 @@
 package co.uk.cbradbury.quackstats.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import javax.persistence.*;
-
-import static javax.persistence.GenerationType.IDENTITY;
+import java.util.UUID;
 
 @Entity(name = "squad_member")
 public class SquadMember {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private final UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "player_id")
     private Player player;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "scorecard_id")
     private Scorecard scorecard;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean captain;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean keeper;
 
-    public Long getId() {
-        return id;
+    public SquadMember() {
+        this.id = UUID.randomUUID();
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public UUID getId() {
+        return id;
     }
 
     public Player getPlayer() {

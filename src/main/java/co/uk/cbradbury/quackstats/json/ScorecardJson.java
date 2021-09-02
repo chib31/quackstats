@@ -1,4 +1,4 @@
-package co.uk.cbradbury.quackstats.json.backup;
+package co.uk.cbradbury.quackstats.json;
 
 import co.uk.cbradbury.quackstats.enums.MatchType;
 import co.uk.cbradbury.quackstats.enums.ResultType;
@@ -9,16 +9,20 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
 import java.util.List;
+import java.util.UUID;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
+@JsonInclude(NON_NULL)
 public class ScorecardJson {
 
     @NotNull
-    private Long teamId;
+    private UUID teamId;
 
     @NotNull
     private ScorecardStatus scorecardStatus;
 
+    /* This needs to be a name rather than a ID to allow spreadsheet imports */
     @NotNull
     private String opponentName;
     
@@ -50,11 +54,11 @@ public class ScorecardJson {
 
     private List<InningsJson> inningsList;
 
-    public Long getTeamId() {
+    public UUID getTeamId() {
         return teamId;
     }
 
-    public void setTeamId(Long teamId) {
+    public void setTeamId(UUID teamId) {
         this.teamId = teamId;
     }
 

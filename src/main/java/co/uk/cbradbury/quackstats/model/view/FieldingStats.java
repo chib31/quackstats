@@ -7,6 +7,7 @@ import org.hibernate.annotations.Subselect;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.UUID;
 
 @Entity
 @Immutable
@@ -51,9 +52,9 @@ import java.sql.Date;
 )
 public class FieldingStats {
     @Id
-    private Long id;
+    private UUID id;
 
-    private Long teamId;
+    private UUID teamId;
 
     private String playerName;
 
@@ -83,11 +84,11 @@ public class FieldingStats {
 
     private Integer overLength;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public Long getTeamId() {
+    public UUID getTeamId() {
         return teamId;
     }
 

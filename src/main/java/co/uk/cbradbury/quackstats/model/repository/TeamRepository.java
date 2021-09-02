@@ -10,13 +10,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface TeamRepository extends CrudRepository<Team, Long> {
-    boolean existsByName(String name);
+public interface TeamRepository extends CrudRepository<Team, UUID> {
 
-    Optional<Team> findByUuid(UUID uuid);
-
-    Optional<Team> findByName(String name);
-
-    @Query("SELECT t FROM team t WHERE LOWER(t.name) LIKE LOWER(CONCAT('%', :name, '%'))")
+    @Query("SELECT t FROM team t WHERE LOWER(t.name) = LOWER(:name)")
     Optional<Team> findByApproximateName(@Param("name") String name);
 }

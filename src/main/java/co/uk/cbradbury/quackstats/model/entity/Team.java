@@ -1,46 +1,27 @@
 package co.uk.cbradbury.quackstats.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import java.util.Set;
 import java.util.UUID;
-
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity(name = "team")
 public class Team {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
-
-    @JsonValue
-    private final UUID uuid = UUID.randomUUID();
+    private final UUID id;
 
     private String name;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "mainTeam")
-    private Set<Player> playerSet;
-
     public Team() {
+        this.id = UUID.randomUUID();
     }
 
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
+    public Team(UUID id) {
         this.id = id;
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public String getName() {
@@ -49,13 +30,5 @@ public class Team {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Set<Player> getPlayerSet() {
-        return playerSet;
-    }
-
-    public void setPlayerSet(Set<Player> playerSet) {
-        this.playerSet = playerSet;
     }
 }

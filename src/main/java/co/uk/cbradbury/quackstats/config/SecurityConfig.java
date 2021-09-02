@@ -1,7 +1,6 @@
 package co.uk.cbradbury.quackstats.config;
 
 import co.uk.cbradbury.quackstats.service.AuthenticationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -17,8 +16,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private AuthenticationService authenticationService;
+    private final AuthenticationService authenticationService;
+
+    public SecurityConfig(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -40,9 +42,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .eraseCredentials(true)
-                .userDetailsService(authenticationService)
-                .passwordEncoder(passwordEncoder());
+        auth.eraseCredentials(true).userDetailsService(authenticationService).passwordEncoder(passwordEncoder());
     }
 }

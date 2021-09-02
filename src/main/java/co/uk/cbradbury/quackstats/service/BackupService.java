@@ -1,20 +1,21 @@
 package co.uk.cbradbury.quackstats.service;
 
-import co.uk.cbradbury.quackstats.enums.RecordType;
-import co.uk.cbradbury.quackstats.enums.ScorecardStatus;
 import co.uk.cbradbury.quackstats.exception.QuackstatsException;
-import co.uk.cbradbury.quackstats.json.backup.*;
+import co.uk.cbradbury.quackstats.json.*;
 import co.uk.cbradbury.quackstats.model.entity.*;
 import co.uk.cbradbury.quackstats.model.repository.*;
+import co.uk.cbradbury.quackstats.util.EntityJsonMapping;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static co.uk.cbradbury.quackstats.util.EntityJsonMapping.*;
 
 @Service
 public class BackupService {
@@ -24,7 +25,7 @@ public class BackupService {
     private final ScorecardRepository scorecardRepository;
 
     private final InningsRepository inningsRepository;
-    
+
     private final PlayerRepository playerRepository;
 
     private final SquadMemberRepository squadMemberRepository;
@@ -35,13 +36,10 @@ public class BackupService {
 
     private final WicketRepository wicketRepository;
 
-    private final TeamRepository teamRepository;
-
     public BackupService(EntityManager entityManager, ScorecardRepository scorecardRepository,
                          InningsRepository inningsRepository, PlayerRepository playerRepository,
                          SquadMemberRepository squadMemberRepository, BatRepository batRepository,
-                         BowlRepository bowlRepository, WicketRepository wicketRepository,
-                         TeamRepository teamRepository) {
+                         BowlRepository bowlRepository, WicketRepository wicketRepository) {
         this.entityManager = entityManager;
         this.scorecardRepository = scorecardRepository;
         this.inningsRepository = inningsRepository;
@@ -50,10 +48,9 @@ public class BackupService {
         this.batRepository = batRepository;
         this.bowlRepository = bowlRepository;
         this.wicketRepository = wicketRepository;
-        this.teamRepository = teamRepository;
     }
 
-    public Optional<Scorecard> findScorecardById(Long scorecardId) {
+    public Optional<Scorecard> findScorecardById(UUID scorecardId) {
         return scorecardRepository.findById(scorecardId);
     }
 
@@ -61,298 +58,114 @@ public class BackupService {
         return scorecardRepository.findByDateAndFixtureOrder(date, fixtureOrder);
     }
 
-    public Optional<Team> findTeamById(Long teamId) {
-        return teamRepository.findById(teamId);
-    }
-
-    public Optional<Team> findTeamByApproximateName(String teamName) {
-        String simplifiedName = teamName
-                .replace(" CC", "")
-                .replace(" XI", "");
-        if (teamRepository.findByApproximateName(simplifiedName).isPresent()) {
-            return teamRepository.findByApproximateName(simplifiedName);
-        } else {
-            String removedApostrophes = simplifiedName.replace("'", "");
-            return teamRepository.findByApproximateName(removedApostrophes);
-        }
-    }
-
-    public Optional<Player> findPlayerByNameAndMainTeam(String name, Team team) {
-        return playerRepository.findByScorecardNameAndMainTeam(name, team);
-    }
-
     @Transactional
-    public void createFromBackup(ScorecardJson scorecardJson, Team team, Team opponent) {
-        var scorecard = new Scorecard();
-        scorecard.setRecordType(RecordType.BACKUP);
-        scorecard.setStatus(ScorecardStatus.COMPLETE);
-        scorecard.setTeam(team);
-        scorecard.setOpponent(opponent);
-        scorecard.setDate(scorecardJson.getDate());
-        scorecard.setFixtureOrder(scorecardJson.getFixtureOrder());
-        scorecard.setLocation(scorecardJson.getLocation());
-        scorecard.setMatchType(scorecardJson.getMatchType());
-        scorecard.setInningsLength(scorecardJson.getInningsLength());
-        scorecard.setOverLength(scorecardJson.getOverLength());
-        scorecard.setWonToss(scorecardJson.getWonToss());
-        scorecard.setBatFirst(scorecardJson.getBatFirst());
-        scorecard.setResultType(scorecardJson.getResultType());
-        
-        var squadMemberList = scorecardJson.getSquadMemberList().stream()
-                .map(e -> constructSquadMemberFromJson(e, scorecard, team)).collect(Collectors.toList());
-        
-        var inningsList = scorecardJson.getInningsList().stream()
-                .map(e -> constructInningsFromJson(e, scorecard, squadMemberList)).collect(Collectors.toList());
-
-        scorecard.setSquadMemberList(squadMemberList);
-        scorecard.setInningsList(inningsList);
-
+    public void importScorecard(ScorecardJson scorecardJson, Team team, Team opponent) {
+        var scorecard = mapScorecardFromJson(scorecardJson, team, opponent);
         entityManager.persist(scorecard);
+
+        var squadMemberList = scorecardJson.getSquadMemberList().stream()
+                .map(sm -> createSquadMemberFromJson(sm, scorecard))
+                .collect(Collectors.toList());
+        squadMemberList.forEach(entityManager::persist);
+
+        scorecardJson.getInningsList().forEach(i -> constructInningsFromJson(i, scorecard, squadMemberList));
     }
 
-    public List<ScorecardJson> fetchAllScorecardsJson() {
-        var scorecards = scorecardRepository.findAll();
+    public ScorecardJson constructScorecardJson(Scorecard scorecard) {
+        var scorecardJson = mapScorecardToJson(scorecard);
 
-        List<ScorecardJson> scorecardJsons = new ArrayList<>();
-        for (var scorecard : scorecards) {
-            scorecardJsons.add(fetchScorecardJson(scorecard));
-        }
+        var squadMemberJsonList = squadMemberRepository.findAllByScorecard(scorecard).stream()
+                .map(EntityJsonMapping::mapSquadMemberToJson)
+                .collect(Collectors.toList());
+        scorecardJson.setSquadMemberList(squadMemberJsonList);
 
-        return scorecardJsons;
-    }
-
-    public ScorecardJson fetchScorecardJson(Scorecard scorecard) {
-        var scorecardJson = new ScorecardJson();
-
-        scorecardJson.setTeamId(scorecard.getTeam().getId());
-        scorecardJson.setScorecardStatus(scorecard.getStatus());
-        scorecardJson.setOpponentName(scorecard.getOpponent().getName());
-        scorecardJson.setDate(scorecard.getDate());
-        scorecardJson.setFixtureOrder(scorecard.getFixtureOrder());
-        scorecardJson.setLocation(scorecard.getLocation());
-        scorecardJson.setMatchType(scorecard.getMatchType());
-        scorecardJson.setInningsLength(scorecard.getInningsLength());
-        scorecardJson.setOverLength(scorecard.getOverLength());
-        scorecardJson.setWonToss(scorecard.getWonToss());
-        scorecardJson.setBatFirst(scorecard.getBatFirst());
-        scorecardJson.setResultType(scorecard.getResultType());
-
-        scorecardJson.setSquadMemberList(constructSquadMemberJsonListFromScorecard(scorecard));
-        scorecardJson.setInningsList(constructInningsJsonListFromScorecard(scorecard));
+        var inningsJsonList = inningsRepository.findAllByScorecard(scorecard).stream()
+                .map(this::constructInningsJson)
+                .collect(Collectors.toList());
+        scorecardJson.setInningsList(inningsJsonList);
 
         return scorecardJson;
     }
 
-    private List<SquadMemberJson> constructSquadMemberJsonListFromScorecard(Scorecard scorecard) {
-        var squadMembersList = squadMemberRepository.findAllByScorecard(scorecard);
-        return squadMembersList.stream().map(this::convertSquadMemberToJson).collect(Collectors.toList());
+    public List<ScorecardJson> constructAllScorecardsJson() {
+        return scorecardRepository.findAll().stream()
+                .map(this::constructScorecardJson)
+                .collect(Collectors.toList());
     }
 
-    private SquadMemberJson convertSquadMemberToJson(SquadMember squadMember) {
-        return new SquadMemberJson(
-                squadMember.getPlayer().getScorecardName(),
-                squadMember.getCaptain(),
-                squadMember.getKeeper());
-    }
-    
-    private SquadMember  constructSquadMemberFromJson(SquadMemberJson squadMemberJson, Scorecard scorecard, Team team) {
-        var player = playerRepository.findByScorecardNameAndMainTeam(squadMemberJson.getName(), team)
-                .orElseThrow(() -> new QuackstatsException(String.format("No player with name %s found in team %s",
-                        squadMemberJson.getName(), team.getName())));
-        
-        var squadMember = new SquadMember();
-        squadMember.setScorecard(scorecard);
-        squadMember.setPlayer(player);
-        squadMember.setCaptain(squadMemberJson.getCaptain());
-        squadMember.setKeeper(squadMemberJson.getKeeper());
-        return squadMember;
-    }
+    private InningsJson constructInningsJson(Innings innings) {
+        var inningsJson = mapInningsToJson(innings);
 
-    private List<InningsJson> constructInningsJsonListFromScorecard(Scorecard scorecard) {
-        var inningsList = inningsRepository.findAllByScorecard(scorecard);
-        return inningsList.stream().map(this::convertInningsToJson).collect(Collectors.toList());
-    }
+        if (innings.getTeamIsBatting()) {
+            var batJsonList = batRepository.findAllByInnings(innings).stream()
+                    .map(EntityJsonMapping::mapBatToJson)
+                    .collect(Collectors.toList());
+            inningsJson.setBatList(batJsonList);
 
-    private InningsJson convertInningsToJson(Innings innings) {
-        var inningsJson = new InningsJson();
-        inningsJson.setInningsOrder(innings.getInningsOrder());
-        inningsJson.setTeamIsBatting(innings.getTeamIsBatting());
-        inningsJson.setDeliveries(innings.getDeliveries());
-        inningsJson.setWickets(innings.getWickets());
-        inningsJson.setRuns(innings.getRuns());
-        inningsJson.setByes(innings.getByes());
-        inningsJson.setLegByes(innings.getLegByes());
-        inningsJson.setWides(innings.getWides());
-        inningsJson.setNoBalls(innings.getNoBalls());
-        inningsJson.setPenaltyRuns(innings.getPenaltyRuns());
+        } else {
+            var bowlJsonList = bowlRepository.findAllByInnings(innings).stream()
+                    .map(EntityJsonMapping::mapBowlToJson)
+                    .collect(Collectors.toList());
+            inningsJson.setBowlList(bowlJsonList);
 
-        inningsJson.setBatList(constructBatJsonListFromInnings(innings));
-        inningsJson.setBowlList(constructBowlJsonListFromInnings(innings));
-        inningsJson.setWicketList(constructWicketJsonListFromInnings(innings));
+            var wicketJsonList = wicketRepository.findAllByInnings(innings).stream()
+                    .map(EntityJsonMapping::mapWicketToJson)
+                    .collect(Collectors.toList());
+            inningsJson.setWicketList(wicketJsonList);
+        }
 
         return inningsJson;
     }
-    
-    private Innings constructInningsFromJson(InningsJson inningsJson, Scorecard scorecard,
-                                             List<SquadMember> squadMemberList) {
-        var innings = new Innings();
-        innings.setScorecard(scorecard);
-        innings.setInningsOrder(inningsJson.getInningsOrder());
-        innings.setTeamIsBatting(inningsJson.getTeamIsBatting());
-        innings.setDeliveries(inningsJson.getDeliveries());
-        innings.setWickets(inningsJson.getWickets());
-        innings.setRuns(inningsJson.getRuns());
-        innings.setByes(inningsJson.getByes());
-        innings.setLegByes(inningsJson.getLegByes());
-        innings.setWides(inningsJson.getWides());
-        innings.setNoBalls(inningsJson.getNoBalls());
-        innings.setPenaltyRuns(inningsJson.getPenaltyRuns());
 
-        if (inningsJson.getBatList() != null) {
-            var batList = inningsJson.getBatList().stream()
-                    .map(e -> constructBatFromJson(e, innings, squadMemberList))
-                    .collect(Collectors.toList());
+    private SquadMember createSquadMemberFromJson(SquadMemberJson squadMemberJson, Scorecard scorecard) {
+        var player = playerRepository.findByScorecardNameAndMainTeam(squadMemberJson.getName(),
+                scorecard.getTeam()).orElseThrow(
+                () -> new QuackstatsException(String.format("No player with name %s found in team %s",
+                        squadMemberJson.getName(), scorecard.getTeam().getName())));
 
-            innings.setBatList(batList);
-        }
-
-        if (inningsJson.getBowlList() != null) {
-            var bowlList = inningsJson.getBowlList().stream()
-                    .map(e -> constructBowlFromJson(e, innings, squadMemberList))
-                    .collect(Collectors.toList());
-
-            innings.setBowlList(bowlList);
-        }
-
-        if (inningsJson.getWicketList() != null) {
-            var wicketList = inningsJson.getWicketList().stream()
-                    .map(e -> constructWicketFromJson(e, innings, squadMemberList))
-                    .collect(Collectors.toList());
-
-            innings.setWicketList(wicketList);
-        }
-
-        return innings;
+        return mapSquadMemberFromJson(squadMemberJson, scorecard, player);
     }
-    
+
+    private void constructInningsFromJson(InningsJson inningsJson, Scorecard scorecard,
+                                             List<SquadMember> squadMemberList) {
+        var innings = mapInningsFromJson(inningsJson, scorecard);
+        entityManager.persist(innings);
+
+        if (innings.getTeamIsBatting()) {
+            inningsJson.getBatList().stream()
+                    .map(e -> constructBatFromJson(e, innings, squadMemberList))
+                    .forEach(entityManager::persist);
+        } else {
+            inningsJson.getBowlList().stream()
+                    .map(e -> constructBowlFromJson(e, innings, squadMemberList))
+                    .forEach(entityManager::persist);
+
+            inningsJson.getWicketList().stream()
+                    .map(e -> constructWicketFromJson(e, innings, squadMemberList))
+                    .forEach(entityManager::persist);
+        }
+    }
+
     private Bat constructBatFromJson(BatJson batJson, Innings innings, List<SquadMember> squadMemberList) {
         var squadMember = findSquadMemberInListByName(squadMemberList, batJson.getName());
-        
-        var bat = new Bat();
-        bat.setSquadMember(squadMember);
-        bat.setInnings(innings);
-        bat.setPosition(batJson.getPosition());
-        bat.setDeliveries(batJson.getDeliveries());
-        bat.setRuns(batJson.getRuns());
-        bat.setFours(batJson.getFours());
-        bat.setSixes(batJson.getSixes());
-        bat.setBattingConclusion(batJson.getBattingConclusion());
-        bat.setWicketFielder(batJson.getWicketFielder());
-        bat.setWicketBowler(batJson.getWicketBowler());
-        bat.setWhereCaught(batJson.getWhereCaught());
-        return bat;
+        return mapBatFromJson(batJson, innings, squadMember);
     }
-    
+
     private Bowl constructBowlFromJson(BowlJson bowlJson, Innings innings, List<SquadMember> squadMemberList) {
         var squadMember = findSquadMemberInListByName(squadMemberList, bowlJson.getName());
-        
-        var bowl = new Bowl();
-        bowl.setSquadMember(squadMember);
-        bowl.setInnings(innings);
-        bowl.setBowlerNumber(bowlJson.getBowlerNumber());
-        bowl.setDeliveries(bowlJson.getDeliveries());
-        bowl.setMaidens(bowlJson.getMaidens());
-        bowl.setRuns(bowlJson.getRuns());
-        bowl.setWickets(bowlJson.getWickets());
-        bowl.setWides(bowlJson.getWides());
-        bowl.setNoBalls(bowlJson.getNoBalls());
-        bowl.setHatTricks(bowlJson.getHatTricks());
-        return bowl;
+        return mapBowlFromJson(bowlJson, innings, squadMember);
     }
 
     private Wicket constructWicketFromJson(WicketJson wicketJson, Innings innings, List<SquadMember> squadMemberList) {
         var squadMemberBowler = findSquadMemberInListByName(squadMemberList, wicketJson.getBowlerName());
         var squadMemberFielder = findSquadMemberInListByName(squadMemberList, wicketJson.getFielderName());
-
-        var wicket = new Wicket();
-        wicket.setInnings(innings);
-        wicket.setBowler(squadMemberBowler);
-        wicket.setFielder(squadMemberFielder);
-        wicket.setBattingConclusion(wicketJson.getBattingConclusion());
-        wicket.setBattingPosition(wicketJson.getBattingPosition());
-        wicket.setBatterRuns(wicketJson.getBatterRuns());
-        wicket.setFieldingLocation(wicketJson.getFieldingLocation());
-        return wicket;
+        return mapWicketFromJson(wicketJson, innings, squadMemberBowler, squadMemberFielder);
     }
-    
+
     private SquadMember findSquadMemberInListByName(List<SquadMember> squadMemberList, String name) {
         return squadMemberList.stream()
                 .filter(e -> e.getPlayer().getScorecardName().equals(name))
                 .findAny()
                 .orElse(null);
-    }
-
-    private List<BatJson> constructBatJsonListFromInnings(Innings innings) {
-        var batList = batRepository.findAllByInnings(innings);
-        return batList.stream().map(this::convertBatToJson).collect(Collectors.toList());
-    }
-
-    private BatJson convertBatToJson(Bat bat) {
-        var batJson = new BatJson();
-        batJson.setName(bat.getSquadMember().getPlayer().getScorecardName());
-        batJson.setPosition(bat.getPosition());
-        batJson.setDeliveries(bat.getDeliveries());
-        batJson.setRuns(bat.getRuns());
-        batJson.setFours(bat.getFours());
-        batJson.setSixes(bat.getSixes());
-        batJson.setBattingConclusion(bat.getBattingConclusion());
-        batJson.setWicketFielder(bat.getWicketFielder());
-        batJson.setWicketBowler(bat.getWicketBowler());
-        batJson.setWhereCaught(bat.getWhereCaught());
-        return batJson;
-    }
-
-    private List<BowlJson> constructBowlJsonListFromInnings(Innings innings) {
-        var bowlList = bowlRepository.findAllByInnings(innings);
-        return bowlList.stream().map(this::convertBowlToJson).collect(Collectors.toList());
-    }
-
-    private BowlJson convertBowlToJson(Bowl bowl) {
-        var bowlJson = new BowlJson();
-        bowlJson.setName(bowl.getSquadMember().getPlayer().getScorecardName());
-        bowlJson.setBowlerNumber(bowl.getBowlerNumber());
-        bowlJson.setDeliveries(bowl.getDeliveries());
-        bowlJson.setMaidens(bowl.getMaidens());
-        bowlJson.setRuns(bowl.getRuns());
-        bowlJson.setWickets(bowl.getWickets());
-        bowlJson.setWides(bowl.getWides());
-        bowlJson.setNoBalls(bowl.getNoBalls());
-        bowlJson.setHatTricks(bowl.getHatTricks());
-        return bowlJson;
-    }
-
-    private List<WicketJson> constructWicketJsonListFromInnings(Innings innings) {
-        var wicketList = wicketRepository.findAllByInnings(innings);
-        return wicketList.stream().map(this::convertWicketToJson).collect(Collectors.toList());
-    }
-
-    private WicketJson convertWicketToJson(Wicket wicket) {
-        var wicketJson = new WicketJson();
-
-        var bowlerName = wicket.getBowler() == null
-                ? null
-                : wicket.getBowler().getPlayer().getScorecardName();
-        var fielderName = wicket.getFielder() == null
-                ? null
-                : wicket.getFielder().getPlayer().getScorecardName();
-
-        wicketJson.setBowlerName(bowlerName);
-        wicketJson.setFielderName(fielderName);
-        wicketJson.setBattingConclusion(wicket.getBattingConclusion());
-        wicketJson.setBattingPosition(wicket.getBattingPosition());
-        wicketJson.setBatterRuns(wicket.getBatterRuns());
-        wicketJson.setFieldingLocation(wicket.getFieldingLocation());
-
-        return wicketJson;
     }
 }

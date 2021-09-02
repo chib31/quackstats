@@ -2,29 +2,22 @@ package co.uk.cbradbury.quackstats.model.entity;
 
 import co.uk.cbradbury.quackstats.enums.BattingConclusion;
 import co.uk.cbradbury.quackstats.enums.FieldingLocation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-
-import static javax.persistence.GenerationType.IDENTITY;
+import java.util.UUID;
 
 @Entity(name = "bat")
 public class Bat {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @JsonIgnore
-    private Long id;
+    private final UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "squad_member_id")
-    @JsonIgnoreProperties(value = {"captain", "keeper", "player"})
     @NotNull
     private SquadMember squadMember;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "innings_id")
     @NotNull
@@ -54,14 +47,11 @@ public class Bat {
     private FieldingLocation whereCaught;
 
     public Bat() {
+        this.id = UUID.randomUUID();
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public SquadMember getSquadMember() {

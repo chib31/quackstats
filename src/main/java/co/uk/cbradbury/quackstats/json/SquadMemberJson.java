@@ -3,27 +3,20 @@ package co.uk.cbradbury.quackstats.json;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotNull;
-import java.util.UUID;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @JsonInclude(NON_NULL)
-public class TeamJson {
-
-    private UUID id;
+public class SquadMemberJson {
 
     @NotNull
     private String name;
 
-    public TeamJson() {
-    }
+    private Boolean captain;
 
-    public UUID getId() {
-        return id;
-    }
+    private Boolean keeper;
 
-    public void setId(UUID id) {
-        this.id = id;
+    public SquadMemberJson() {
     }
 
     public String getName() {
@@ -32,5 +25,21 @@ public class TeamJson {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Boolean getCaptain() {
+        return captain;
+    }
+
+    public void setCaptain(Boolean captain) {
+        this.captain = captain;
+    }
+
+    public Boolean getKeeper() {
+        return keeper;
+    }
+
+    public void setKeeper(Boolean keeper) {
+        this.keeper = keeper;
     }
 }

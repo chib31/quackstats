@@ -7,16 +7,13 @@ import co.uk.cbradbury.quackstats.enums.ScorecardStatus;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.List;
-
-import static javax.persistence.GenerationType.IDENTITY;
+import java.util.UUID;
 
 @Entity(name = "scorecard")
 public class Scorecard {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private final UUID id;
 
     @Enumerated(EnumType.STRING)
     private RecordType recordType;
@@ -54,21 +51,12 @@ public class Scorecard {
     @Enumerated(EnumType.STRING)
     private ResultType resultType;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "scorecard", cascade = CascadeType.PERSIST)
-    private List<SquadMember> squadMemberList;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "scorecard", cascade = CascadeType.PERSIST)
-    private List<Innings> inningsList;
-
     public Scorecard() {
+        this.id = UUID.randomUUID();
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public RecordType getRecordType() {
@@ -181,21 +169,5 @@ public class Scorecard {
 
     public void setResultType(ResultType resultType) {
         this.resultType = resultType;
-    }
-
-    public List<SquadMember> getSquadMemberList() {
-        return squadMemberList;
-    }
-
-    public void setSquadMemberList(List<SquadMember> squadMemberList) {
-        this.squadMemberList = squadMemberList;
-    }
-
-    public List<Innings> getInningsList() {
-        return inningsList;
-    }
-
-    public void setInningsList(List<Innings> inningsList) {
-        this.inningsList = inningsList;
     }
 }
