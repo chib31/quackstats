@@ -1,5 +1,5 @@
 {
-  "name": "frontend2",
+  "name": "quackstats",
   "version": "0.1.0",
   "engines": {
     "node": "14.x"
@@ -8,7 +8,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "start": "node server.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
@@ -17,6 +18,7 @@
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "d3-array": "^3.0.1",
+    "express": "^4.17.1",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "supergroup": "^1.1.9",
