@@ -5,6 +5,7 @@ import co.uk.cbradbury.quackstats.service.StatsService;
 import co.uk.cbradbury.quackstats.service.TeamService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.UUID;
 
+@CrossOrigin
 @RestController
 public class StatsController {
 
