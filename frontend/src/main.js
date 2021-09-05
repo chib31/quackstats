@@ -24,7 +24,6 @@ import 'vue-select/dist/vue-select.css';
 import HomePage from "./components/HomePage";
 import ResultsPage from "./components/ResultsPage";
 import PlayersPage from "./components/PlayersPage";
-import Scorecard from "./components/Scorecard";
 import Stats from "./components/stats/Stats";
 
 library.add(faEye, faEyeSlash, faAngleUp, faAngleDown, faAngleRight, faTimes);
@@ -64,14 +63,6 @@ const routes = [
     meta: {
       auth: false,
       title: 'Stats',
-    },
-  }, {
-    path: '/scorecard',
-    component: Scorecard,
-    props: true,
-    meta: {
-      auth: false,
-      title: 'Scorecard',
     },
   },
 ];

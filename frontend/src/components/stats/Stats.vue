@@ -16,6 +16,7 @@
 import columnConfig from '../../columns.json';
 import StatType from "@/components/stats/StatType";
 import axios from 'axios'
+import config from "@/config";
 
 export default {
   components: {StatType},
@@ -62,7 +63,7 @@ export default {
     },
     async fetchRawData() {
       this.dataReady = false;
-      await axios.get('http://localhost:8081/stats/' + this.teamId + '/' + this.statType.key)
+      await axios.get(config.BASE_URL + '/stats/' + config.TEAM_UUID + '/' + this.statType.key)
           .then(response => {
             const result = response.data.stats;
             console.log('Data fetch complete: ' + result.length + ' rows returned');
