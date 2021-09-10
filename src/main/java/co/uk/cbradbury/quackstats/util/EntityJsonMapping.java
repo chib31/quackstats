@@ -46,7 +46,6 @@ public class EntityJsonMapping {
         playerJson.setMembershipStart(player.getMembershipStart());
         playerJson.setCapNumber(player.getCapNumber());
         playerJson.setShirtNumber(player.getShirtNumber());
-        playerJson.setMember(player.getMembershipStart() != null);
         return playerJson;
     }
 

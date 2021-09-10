@@ -31,8 +31,6 @@ public class PlayerJson {
 
     private Integer capNumber;
 
-    private Boolean member;
-
     private Integer shirtNumber;
 
     public PlayerJson() {
@@ -108,14 +106,6 @@ public class PlayerJson {
 
     public void setCapNumber(Integer capNumber) {
         this.capNumber = capNumber;
-    }
-
-    public Boolean getMember() {
-        return member;
-    }
-
-    public void setMember(Boolean member) {
-        this.member = member;
     }
 
     public Integer getShirtNumber() {
