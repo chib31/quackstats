@@ -29,13 +29,13 @@ export default {
       rawData: [],
       rawCols: [],
 
-      statType: { key: 'batting', label: 'Batting'},
+      statType: {key: 'batting', label: 'Batting'},
       teamId: 1,
 
       statTypes: [
-        { key: 'batting', label: 'Batting'},
-        { key: 'bowling', label: 'Bowling'},
-        { key: 'fielding', label: 'Fielding'}
+        {key: 'batting', label: 'Batting'},
+        {key: 'bowling', label: 'Bowling'},
+        {key: 'fielding', label: 'Fielding'}
       ],
     }
   },

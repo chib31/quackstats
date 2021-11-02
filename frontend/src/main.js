@@ -14,6 +14,7 @@ import { faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faPlug } from '@fortawesome/free-solid-svg-icons';
 
 // CSS
 import './assets/css/style.css';
@@ -26,7 +27,7 @@ import ResultsPage from "./components/ResultsPage";
 import PlayersPage from "./components/PlayersPage";
 import Stats from "./components/stats/Stats";
 
-library.add(faEye, faEyeSlash, faAngleUp, faAngleDown, faAngleRight, faTimes);
+library.add(faEye, faEyeSlash, faAngleUp, faAngleDown, faAngleRight, faTimes, faPlug);
 
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
