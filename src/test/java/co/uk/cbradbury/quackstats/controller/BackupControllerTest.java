@@ -1,6 +1,5 @@
 package co.uk.cbradbury.quackstats.controller;
 
-import co.uk.cbradbury.quackstats.json.ScorecardJson;
 import co.uk.cbradbury.quackstats.model.entity.Scorecard;
 import co.uk.cbradbury.quackstats.service.BackupService;
 import org.apache.commons.io.IOUtils;
@@ -53,7 +52,7 @@ class BackupControllerTest {
 
         when(backupService.findScorecardById(id)).thenReturn(Optional.of(testScorecard));
 
-        when(backupService.fetchScorecardJson(testScorecard)).thenReturn(new ScorecardJson());
+//        when(backupService.fetchScorecardJson(testScorecard)).thenReturn(new ScorecardJson());
 
         mockMvc.perform(get("/scorecard-backup/retrieve-backup/1"))
                 .andExpect(status().isOk());

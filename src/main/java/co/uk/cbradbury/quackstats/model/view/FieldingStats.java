@@ -13,10 +13,10 @@ import java.util.UUID;
 @Immutable
 @Subselect(
 "  WITH wicket_types AS (\n" +
-"    SELECT w.fielder_id, w.innings_id, w.batting_conclusion AS type, COUNT(*) total\n" +
+"    SELECT w.fielder_id, w.batting_conclusion AS type, COUNT(*) total\n" +
 "    FROM wicket w\n" +
 "    WHERE w.fielder_id IS NOT NULL\n" +
-"    GROUP BY w.innings_id, fielder_id, w.batting_conclusion\n" +
+"    GROUP BY w.fielder_id, w.batting_conclusion\n" +
 "  ), wicket_totals AS (\n" +
 "    SELECT\n" +
 "      sm.id AS id,\n" +
