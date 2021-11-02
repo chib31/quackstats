@@ -41,6 +41,7 @@ import java.util.UUID;
 "    s.date AS fixture_date,\n" +
 "    EXTRACT(year from s.date) AS season,\n" +
 "    t.name AS opposition,\n" +
+"    'vs ' || t.name || ' (' || s.date || ')' AS fixture,\n" +
 "    s.result_type,\n" +
 "    s.match_type,\n" +
 "    s.over_length\n" +
@@ -75,6 +76,8 @@ public class FieldingStats {
     private Integer season;
 
     private String opposition;
+
+    private String fixture;
 
     @Enumerated(EnumType.STRING)
     private ResultType resultType;
@@ -130,6 +133,10 @@ public class FieldingStats {
 
     public String getOpposition() {
         return opposition;
+    }
+
+    public String getFixture() {
+        return fixture;
     }
 
     public String getResultType() {

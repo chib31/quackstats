@@ -54,7 +54,6 @@ import StatFinalisation from "@/components/stats/StatFinalisation";
 import * as sg from "supergroup";
 import Vue from "vue";
 import {mean, sum} from "d3-array";
-import moment from "moment";
 import {Utils} from "@/utils";
 import _cloneDeep from 'lodash/cloneDeep';
 
@@ -222,9 +221,6 @@ export default {
         case 'bowling':
           this.calculateBowlingCompositeCols(this.constructedData, this.tempRawCols);
           break;
-        case 'fielding':
-          this.calculateFieldingCompositeCols(this.constructedData, this.tempRawCols);
-          break;
         default:
           console.error('Unknown stat type');
       }
@@ -235,8 +231,6 @@ export default {
         Vue.set(r, 'strikeRate', this.calculateBattingStrikeRate(r.deliveries, r.runs));
         Vue.set(r, 'percentTotal', this.calculatePercentTotal(r.runs, r.teamTotal));
         Vue.set(r, 'average', this.calculateAverage(r.runs, r.wickets));
-        Vue.set(r, 'fixture',
-            'vs ' + r.opposition + ' (' + moment(r.fixtureDate).format("Do MMM YYYY") + ')');
       }
     },
 
@@ -246,17 +240,8 @@ export default {
         Vue.set(r, 'overs', this.calculateOvers(r.deliveries));
         Vue.set(r, 'strikeRate', this.calculateBowlingStrikeRate(r.deliveries, r.wickets));
         Vue.set(r, 'average', this.calculateAverage(r.runs, r.wickets));
-        Vue.set(r, 'fixture',
-            'vs ' + r.opposition + ' (' + moment(r.fixtureDate).format("Do MMM YYYY") + ')');
         Vue.set(r, 'avgVictimRuns', this.calculateAvgVictimRuns(r.sumVictimRuns, r.wickets));
         Vue.set(r, 'avgVictimPosition', this.calculateAvgVictimPos(r.sumVictimPosition, r.wickets));
-      }
-    },
-
-    calculateFieldingCompositeCols() {
-      for(const r of this.constructedData) {
-        Vue.set(r, 'fixture',
-            'vs ' + r.opposition + ' (' + moment(r.fixtureDate).format("Do MMM YYYY") + ')');
       }
     },
 

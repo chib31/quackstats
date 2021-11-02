@@ -26,6 +26,7 @@ import java.util.UUID;
 "    s.date AS fixture_date,\n" +
 "    EXTRACT(year from s.date) AS season,\n" +
 "    o.name AS opposition,\n" +
+"    'vs ' || o.name || ' (' || s.date || ')' AS fixture,\n" +
 "    s.result_type,\n" +
 "    i.runs AS team_total,\n" +
 "    s.match_type,\n" +
@@ -56,15 +57,6 @@ public class BattingStats {
     @Enumerated(EnumType.STRING)
     private BattingConclusion battingConclusion;
 
-    @Transient
-    private Integer wickets;
-
-    @Transient
-    private Integer innings;
-
-    @Transient
-    private Integer notOuts;
-
     private Integer position;
 
     private Date fixtureDate;
@@ -72,6 +64,8 @@ public class BattingStats {
     private Integer season;
 
     private String opposition;
+
+    private String fixture;
 
     @Enumerated(EnumType.STRING)
     private ResultType resultType;
@@ -144,6 +138,10 @@ public class BattingStats {
 
     public String getOpposition() {
         return opposition;
+    }
+
+    public String getFixture() {
+        return fixture;
     }
 
     public String getResultType() {
