@@ -17,6 +17,6 @@ out/
 ### Quackstats ###
 /src/main/resources/db/util
 /TODO.txt
-/Bugs.txt
+/Issues.txt
 /refdata
 /frontend/dist

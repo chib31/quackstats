@@ -188,8 +188,9 @@ export default {
         const groups = sg.supergroup(this.constructedData, groupedCols.map(gs => gs.key)).leafNodes();
 
         // give group column a meaningful name e.g. Player (Wicket Type, Position)
+        const groupTermLabel = groupedCols.map(gs => gs.raw.label).join("/");
         const groupTermCol = this.tempRawCols.find(e => e.key === 'groupTerm');
-        groupTermCol.label = this.formatGroupTerm(groupedCols.map(gs => gs.label).join("/"));
+        groupTermCol.aggregate.label = this.formatGroupTerm(groupTermLabel);
 
         // for each row in our supergroup, aggregate the columns that require it
         this.constructedData = groups.map(e => this.aggregateGroup(e, this.tempRawCols));
