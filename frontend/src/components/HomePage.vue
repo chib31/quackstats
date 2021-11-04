@@ -1,5 +1,5 @@
 <template>
-  <div id="home" class="home-page px-2">
+  <div id="home">
     <h1 class="display-4">About Us</h1>
     <p>
       Formed from a collection of players who met on the internet via social cricket at Archbishop's Park, Plastics XI
@@ -14,7 +14,6 @@
       <li><a href="https://www.instagram.com/plastics_cc/">Instagram</a></li>
       <li><a href="https://twitter.com/plastics_cc">Twitter</a></li>
     </ul>
-<!--    <img :rounded="true" class="mt-4" fluid src="../assets/images/plastics_background.jpg"/>-->
   </div>
 </template>
 
@@ -23,3 +22,13 @@
     name: 'HomePage'
   }
 </script>
+
+<style>
+  html {
+    background: url(../assets/plastics_background_faded.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+</style>

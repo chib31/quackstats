@@ -1,9 +1,14 @@
 <template>
   <div class="navbar">
-    <router-link to="/home">Home</router-link>
-    <router-link to="/results">Results</router-link>
-    <router-link to="/players">Players</router-link>
-    <router-link to="/stats">Stats</router-link>
+    <div style="display: inline-block">
+      <img style="width: 50px; height: 50px; margin: 5px 0 0 5px;" src="@/assets/plastics_logo_no_text.png" alt="Plastics logo"/>
+    </div>
+    <div style="display: inline-block">
+      <router-link to="/home">Home</router-link>
+      <router-link to="/results">Results</router-link>
+      <router-link to="/players">Players</router-link>
+      <router-link to="/stats">Stats</router-link>
+    </div>
   </div>
 </template>
 <script>
