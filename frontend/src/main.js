@@ -4,17 +4,7 @@ import VueRouter from "vue-router";
 import App from './App.vue';
 import vSelect from 'vue-select';
 import VueSlider from 'vue-slider-component';
-
-// Font Awesome
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faEye } from '@fortawesome/free-solid-svg-icons';
-import { faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { faAngleUp } from '@fortawesome/free-solid-svg-icons';
-import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
-import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { faPlug } from '@fortawesome/free-solid-svg-icons';
+import vuetify from '@/plugins/vuetify';
 
 // CSS
 import './assets/css/style.css';
@@ -27,13 +17,12 @@ import ResultsPage from "./components/ResultsPage";
 import PlayersPage from "./components/PlayersPage";
 import Stats from "./components/stats/Stats";
 
-library.add(faEye, faEyeSlash, faAngleUp, faAngleDown, faAngleRight, faTimes, faPlug);
+import statStore from "./store/statStore";
 
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
 Vue.component('v-select', vSelect);
 Vue.component('VueSlider', VueSlider);
-Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 const routes = [
   {
@@ -73,6 +62,8 @@ const router = new VueRouter({
 });
 
 new Vue({
+  vuetify,
   router,
+  store: statStore,
   render: h => h(App),
 }).$mount('#app');

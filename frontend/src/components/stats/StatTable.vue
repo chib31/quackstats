@@ -6,7 +6,7 @@
           <th>
             <div class="table-header-container">#</div>
           </th>
-          <th v-for="col of pageCols" :key="col.key" class="table-header-container">
+          <th v-for="col of pageCols" :key="col.key" style="white-space: nowrap">
             <div class="table-header-container">
               <div v-if="col.sorted">
                 <div class="table-header-container">
@@ -18,8 +18,8 @@
                   <button v-if="col.sorted.priority !== null"
                           @click="$emit('sort-col-reverse', col)"
                           class="table-header-small-button">
-                    <font-awesome-icon icon="angle-down" v-if="col.sorted.desc"/>
-                    <font-awesome-icon icon="angle-up" v-else/>
+                    <v-icon icon="angle-down" v-if="col.sorted.desc"/>
+                    <v-icon icon="angle-up" v-else/>
                   </button>
                   <button v-if="col.sorted.priority !== null"
                           @click="$emit('sort-col-shift', col)"
@@ -34,7 +34,7 @@
                   <button v-if="col.sorted.priority !== null"
                           @click="$emit('sort-col-clear', col)"
                           class="table-header-small-button parent-hover-only">
-                    <font-awesome-icon icon="times"/>
+                    <v-icon icon="times"/>
                   </button>
                 </div>
               </div>
@@ -47,8 +47,8 @@
       </thead>
       <tbody>
         <tr v-for="(row, idx) of pageData" :key="idx">
-          <td> {{ idx + 1 }} </td>
-          <td v-for="col of pageCols" :key="col.key"> {{ formattedValue(row, col) }} </td>
+          <td style="white-space: nowrap"> {{ idx + 1 }} </td>
+          <td style="white-space: nowrap" v-for="col of pageCols" :key="col.key"> {{ formattedValue(row, col) }} </td>
         </tr>
       </tbody>
     </table>

@@ -1,15 +1,24 @@
 <template>
-  <div>
-    <div>
-      <h1 class="header-with-widget"> {{ statType.label + ' Stats' }} </h1>
-      <v-select :options="statTypes" v-model="statType" :clearable="false" class="header-selector"/>
-    </div>
-    <stat-type v-if="dataReady"
-               :stat-type="statTypeKey"
-               :raw-data="rawData"
-               :raw-cols="rawCols"/>
-    <div v-else>Fetching data...</div>
-  </div>
+  <v-container fluid>
+    <v-row>
+      <v-col cols="auto">
+        <h1 class="header-with-widget"> {{ statType.label + ' Stats' }} </h1>
+      </v-col>
+      <v-col align-self="center">
+        <v-select :options="statTypes" v-model="statType" :clearable="false" class="header-selector"/>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-divider/>
+    </v-row>
+    <v-row>
+      <stat-type v-if="dataReady"
+                 :stat-type="statTypeKey"
+                 :raw-data="rawData"
+                 :raw-cols="rawCols"/>
+      <p v-else>Fetching data...</p>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -90,11 +99,6 @@ export default {
 </script>
 
 <style scoped>
-.tab {
-  overflow: hidden;
-  border: 1px solid #ccc;
-  background-color: #f1f1f1;
-}
 
 /* Style the buttons that are used to open the tab content */
 .tab button {

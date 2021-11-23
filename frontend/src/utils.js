@@ -1,3 +1,6 @@
+import Vue from "vue";
+import {mean, sum} from "d3-array";
+
 export const Utils = {
   methods: {
     toTitleCase(str) {
@@ -56,6 +59,24 @@ export const Utils = {
             .replace(/\//g, ", ") // replace subsequent "/" with comma
             .concat(")");
       } else return groupTerm;
+    },
+
+
+    // Aggregate a data group based on the aggregation type indicated in the column metadata
+    aggregateGroup(group, cols) {
+      const result = {};
+      const groupTerm = this.formatGroupTerm(group.namePath());
+
+      Vue.set(result, 'groupTerm', groupTerm);
+
+      for(const col of cols.filter(c => c.aggregate)) {
+        if (col.aggregate.aggType === 'sum') {
+          Vue.set(result, col.key, group.aggregate(sum, col.key));
+        } else if (col.aggregate.aggType === 'mean') {
+          Vue.set(result, col.key, group.aggregate(mean, col.key));
+        }
+      }
+      return result;
     },
   }
 };
