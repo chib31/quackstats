@@ -11,7 +11,23 @@ export default new Vuex.Store({
     activeColMeta: [],
 
     initialData: [],
+
+    tableCols: [],
+    tableData: [],
   },
+
+  getters: {
+    statType: state => {
+      return state.statType;
+    },
+    initialColMeta: state => {
+      return state.initialColMeta;
+    },
+    initialData: state => {
+      return state.initialData;
+    }
+  },
+
   mutations: {
     SET_STAT_TYPE(state, statType) {
       state.statType = statType;
@@ -27,16 +43,16 @@ export default new Vuex.Store({
   },
   actions: {
 
-    setInitial(context, payload) {
-      context.commit('SET_STAT_TYPE', payload.statType);
+    setInitial({commit}, payload) {
+      commit('SET_STAT_TYPE', payload.statType);
 
       let colMeta = payload.cols;
       for (const col of colMeta.filter(c => c.selectFilters)) {
         col.selectFilters.options = new Set(payload.data.map(e => e[col.key]).sort());
       }
 
-      context.commit('SET_INITIAL_COL_META', colMeta);
-      context.commit('SET_INITIAL_DATA', payload.data);
+      commit('SET_INITIAL_COL_META', colMeta);
+      commit('SET_INITIAL_DATA', payload.data);
     },
 
     updateFilterSelections(state, payload) {

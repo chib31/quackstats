@@ -5,24 +5,14 @@
 
           <stat-options v-if="tempRawCols.length > 0"
                         :temp-raw-cols="tempRawCols"
-                        :finalised-cols="finalisedCols"
-                        v-on:group-toggle="groupToggle"
-                        v-on:filter-change="filterChange"
-                        v-on:range-change="rangeChange"
-                        v-on:col-change="colChange"/>
+                        :finalised-cols="finalisedCols"/>
 
         </v-col>
         <v-col class="pa-0 overflow-x-auto overflow-y-auto">
-          <div v-if="constructedData.length > 0" class="scrollable-table-container pa-2">
+          <div v-if="dataExists" class="scrollable-table-container pa-2">
 
-            <div v-if="finalisedData.length > 0" class="stat-table-section">
-              <stat-table :finalised-data="finalisedData"
-                          :finalised-cols="displayedCols"
-                          :key="tableKey"
-                          v-on:sort-col="sortCol"
-                          v-on:sort-col-shift="sortColShift"
-                          v-on:sort-col-clear="sortColClear"
-                          v-on:sort-col-reverse="sortColReverse"/>
+            <div v-if="dataExists" class="stat-table-section">
+              <stat-table/>
             </div>
             <div v-else>No results</div>
 
@@ -38,11 +28,14 @@
 <script>
 import StatTable from "@/components/stats/StatTable";
 import StatOptions from '@/components/stats/StatOptions';
-import Vue from "vue";
-import {mean, sum} from "d3-array";
+// import Vue from "vue";
+// import {mean, sum} from "d3-array";
 import {Utils} from "@/utils";
 import _cloneDeep from 'lodash/cloneDeep';
 import statStore from "@/store/statStore";
+import axios from "axios";
+import config from "@/config";
+import columnConfig from "@/columns.json";
 
 export default {
   name: "StatType",
@@ -50,8 +43,6 @@ export default {
   mixins: [Utils],
   props: {
     statType: String,
-    rawData: Array,
-    rawCols: Array,
   },
   data() {
     return {
@@ -103,17 +94,37 @@ export default {
     },
     rangedColCount() {
       return this.finalisedCols.filter(c => c.rangeFilters && this.rangeApplied(c.rangeFilters)).length;
+    },
+    dataExists() {
+      return statStore.getters.initialData.length > 0;
     }
   },
   methods: {
     // Restores columns from raw, re-constructs selection filter options
-    resetStatFromRaw() {
-      const payload = {
-        statType: this.statType,
-        cols: this.rawCols,
-        data: this.rawData
+    async resetStatFromRaw() {
+      const data = await this.fetchRawData();
+
+      let cols = [...columnConfig[this.statType]];
+      console.log('Column fetch complete: ' + cols.length + ' columns identified');
+
+      for (const col of cols.filter(c => c.selectFilters)) {
+        col.selectFilters.options = new Set(data.map(e => e[col.key]).sort());
       }
-      statStore.commit('setInitial', payload);
+
+      statStore.commit('SET_STAT_TYPE', this.statType);
+      statStore.commit('SET_INITIAL_COL_META', cols);
+      statStore.commit('SET_INITIAL_DATA', data);
+    },
+
+    async fetchRawData() {
+      return await axios.get(config.BASE_URL + '/stats/' + config.TEAM_UUID + '/' + this.statType)
+          .then(response => {
+            const result = response.data.stats;
+            console.log('Data fetch complete: ' + result.length + ' rows returned');
+            return result;
+          }).catch(error => {
+            console.log(error);
+          });
     },
 
     // ---------FINALISATION

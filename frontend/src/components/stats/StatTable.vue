@@ -46,9 +46,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(row, idx) of pageData" :key="idx">
+        <tr v-for="(row, idx) of finalisedData" :key="idx">
           <td style="white-space: nowrap"> {{ idx + 1 }} </td>
-          <td style="white-space: nowrap" v-for="col of pageCols" :key="col.key"> {{ formattedValue(row, col) }} </td>
+          <td style="white-space: nowrap" v-for="col of finalisedCols" :key="col.key"> {{ formattedValue(row, col) }} </td>
         </tr>
       </tbody>
     </table>
